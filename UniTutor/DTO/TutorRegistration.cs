@@ -15,7 +15,6 @@ namespace UniTutor.DTO
         public string qualifications { get; set; }
         public string cv { get; set; }
         public string universityID { get; set; }
-        public DateTime? CreationDate { get; set; }
-
+      
     }
 }

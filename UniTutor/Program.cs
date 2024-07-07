@@ -73,6 +73,7 @@ builder.Services.AddScoped<ITutor, TutorRepository>();
 builder.Services.AddScoped<ISubject, SubjectRepository>();
 //builder.Services.AddScoped<IRequest, RequestRepository>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();
+builder.Services.AddScoped<IComment, CommentRepository>();
 
 // Register Swagger generator
 builder.Services.AddSwaggerGen(c =>
