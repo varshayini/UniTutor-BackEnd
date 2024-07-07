@@ -13,6 +13,6 @@ namespace UniTutor.DTO
         public string phoneNumber { get; set; }
         public string email { get; set; }
         public string password { get; set; }
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

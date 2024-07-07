@@ -42,8 +42,8 @@ namespace UniTutor.Migrations
                     email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VerificationCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    profileImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProfileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     numberofcomplain = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -68,9 +68,9 @@ namespace UniTutor.Migrations
                     qualifications = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     cv = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     universityID = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProfileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    verified = table.Column<bool>(type: "bit", nullable: false),
+                    Verified = table.Column<bool>(type: "bit", nullable: false),
                     VerificationCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -86,7 +86,7 @@ namespace UniTutor.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     userType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     commentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    time = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     stuId = table.Column<int>(type: "int", nullable: true),
                     tutId = table.Column<int>(type: "int", nullable: true)
                 },
