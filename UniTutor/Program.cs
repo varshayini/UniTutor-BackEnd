@@ -10,6 +10,8 @@ using UniTutor.Services;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
 using UniTutor.Mapping;
+using UniTutor.Controllers;
+using UniTutor.Respository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +75,12 @@ builder.Services.AddScoped<ITutor, TutorRepository>();
 builder.Services.AddScoped<ISubject, SubjectRepository>();
 //builder.Services.AddScoped<IRequest, RequestRepository>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();
+builder.Services.AddScoped<IComment, CommentRepository>();
+builder.Services.AddScoped<IAnalytics, AnalyticsRepository>();
+builder.Services.AddScoped<ICurrentUsersTotal,CurrentUsersTotalRepository>();
+builder.Services.AddScoped<ILastJoined,LastJoinedRepository>();
+
+
 
 // Register Swagger generator
 builder.Services.AddSwaggerGen(c =>

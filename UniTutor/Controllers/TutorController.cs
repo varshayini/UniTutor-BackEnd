@@ -33,9 +33,15 @@ namespace UniTutor.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Set CreatedAt to local time
+                TimeZoneInfo localZone = TimeZoneInfo.FindSystemTimeZoneById("Sri Lanka Standard Time"); // Change to your local time zone
+                DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, localZone);
+               
                 var tutor = _mapper.Map<Tutor>(tutorDto);
                 PasswordHash ph = new PasswordHash();
+               
                 tutor.password = ph.HashPassword(tutorDto.password); // Hash the password
+                tutor.CreatedAt = localDateTime;
 
                 var result = _tutor.SignUp(tutor);
                 if (result)
@@ -83,7 +89,7 @@ namespace UniTutor.Controllers
             var loggedInTutor = _tutor.GetTutorByEmail(email);
 
             // Check if tutor is verified
-            if (!loggedInTutor.verified)
+            if (!loggedInTutor.Verified)
             {
                 return Unauthorized("Account not verified. Please contact the administrator.");
             }

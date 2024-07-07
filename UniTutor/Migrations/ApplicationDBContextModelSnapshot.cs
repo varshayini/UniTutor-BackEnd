@@ -48,6 +48,40 @@ namespace UniTutor.Migrations
                     b.ToTable("Admin");
                 });
 
+            modelBuilder.Entity("UniTutor.Model.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("commentText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("stuId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("tutId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("userType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("stuId");
+
+                    b.HasIndex("tutId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("UniTutor.Model.Request", b =>
                 {
                     b.Property<int>("Id")
@@ -102,8 +136,11 @@ namespace UniTutor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ProfileUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VerificationCode")
                         .HasColumnType("nvarchar(max)");
@@ -142,9 +179,6 @@ namespace UniTutor.Migrations
 
                     b.Property<string>("phoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("profileImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("schoolName")
@@ -211,7 +245,7 @@ namespace UniTutor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ProfileUrl")
@@ -219,6 +253,9 @@ namespace UniTutor.Migrations
 
                     b.Property<string>("VerificationCode")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Verified")
+                        .HasColumnType("bit");
 
                     b.Property<string>("address")
                         .IsRequired()
@@ -265,12 +302,24 @@ namespace UniTutor.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("verified")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.ToTable("Tutors");
+                });
+
+            modelBuilder.Entity("UniTutor.Model.Comment", b =>
+                {
+                    b.HasOne("UniTutor.Model.Student", "Student")
+                        .WithMany("Comments")
+                        .HasForeignKey("stuId");
+
+                    b.HasOne("UniTutor.Model.Tutor", "Tutor")
+                        .WithMany("Comments")
+                        .HasForeignKey("tutId");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tutor");
                 });
 
             modelBuilder.Entity("UniTutor.Model.Request", b =>
@@ -312,8 +361,15 @@ namespace UniTutor.Migrations
                     b.Navigation("Subjects");
                 });
 
+            modelBuilder.Entity("UniTutor.Model.Student", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("UniTutor.Model.Tutor", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Subjects");
                 });
 #pragma warning restore 612, 618

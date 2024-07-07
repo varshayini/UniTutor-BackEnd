@@ -41,9 +41,14 @@ namespace UniTutor.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Set CreatedAt to local time
+                TimeZoneInfo localZone = TimeZoneInfo.FindSystemTimeZoneById("Sri Lanka Standard Time"); // Change to your local time zone
+                DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, localZone);
+
                 var student = _mapper.Map<Student>(studentDto);
                 PasswordHash ph = new PasswordHash();
                 student.password = ph.HashPassword(studentDto.password); // Hash the password
+                student.CreatedAt = localDateTime;
 
                 var result = _student.SignUp(student);
                 if (result)

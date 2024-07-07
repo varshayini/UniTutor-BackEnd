@@ -3,6 +3,6 @@
     public class CreateComment
     {
         public string commentText { get; set; }
-        public DateTime time { get; set; }
+        public DateTime Date { get; set; }
     }
 }

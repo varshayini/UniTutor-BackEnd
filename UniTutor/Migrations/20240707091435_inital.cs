@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniTutor.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class inital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -42,8 +42,8 @@ namespace UniTutor.Migrations
                     email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VerificationCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    profileImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProfileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     numberofcomplain = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -68,14 +68,41 @@ namespace UniTutor.Migrations
                     qualifications = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     cv = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     universityID = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProfileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    verified = table.Column<bool>(type: "bit", nullable: false),
+                    Verified = table.Column<bool>(type: "bit", nullable: false),
                     VerificationCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tutors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    commentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    stuId = table.Column<int>(type: "int", nullable: true),
+                    tutId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Students_stuId",
+                        column: x => x.stuId,
+                        principalTable: "Students",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Comments_Tutors_tutId",
+                        column: x => x.tutId,
+                        principalTable: "Tutors",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -142,6 +169,16 @@ namespace UniTutor.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_stuId",
+                table: "Comments",
+                column: "stuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_tutId",
+                table: "Comments",
+                column: "tutId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Requests_studentId",
                 table: "Requests",
                 column: "studentId");
@@ -167,6 +204,9 @@ namespace UniTutor.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Admin");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Subjects");

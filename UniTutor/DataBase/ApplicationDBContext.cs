@@ -15,21 +15,29 @@ public class ApplicationDBContext:DbContext
     public DbSet<Subject> Subjects { get; set; }
    // public DbSet<Review> Reviews { get; set; }
     public DbSet<Request> Requests { get; set; }
-    //public DbSet<Comment> Comments { get; set; }
-    //protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //{
-    //    modelBuilder.Entity<Comment>()
-    //        .HasOne(c => c.Student)
-    //        .WithMany(s => s.Comments)
-    //        .HasForeignKey(c => c.stuId)
-    //        .OnDelete(DeleteBehavior.Cascade);
+    public DbSet<Comment> Comments { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Student>()
+                .HasMany(s => s.Comments)
+                .WithOne(c => c.Student)
+                .HasForeignKey(c => c.stuId);
 
-    //    modelBuilder.Entity<Comment>()
-    //        .HasOne(c => c.Tutor)
-    //        .WithMany(t => t.Comments)
-    //        .HasForeignKey(c => c.tutId)
-    //        .OnDelete(DeleteBehavior.Cascade);
-    //}
+        modelBuilder.Entity<Tutor>()
+            .HasMany(t => t.Comments)
+            .WithOne(c => c.Tutor)
+            .HasForeignKey(c => c.tutId);
+
+        modelBuilder.Entity<Tutor>()
+               .Property(t => t.CreatedAt)
+               .HasColumnType("datetime2"); // Ensure the type matches your MSSQL column type
+
+        modelBuilder.Entity<Student>()
+               .Property(t => t.CreatedAt)
+               .HasColumnType("datetime2");
+
+        base.OnModelCreating(modelBuilder);
+    }
 
 
 }

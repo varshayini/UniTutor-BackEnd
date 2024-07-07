@@ -120,7 +120,7 @@ namespace UniTutor.Repository
             var tutor = await _DBcontext.Tutors.FindAsync(id);
             if (tutor != null)
             {
-                tutor.verified = true; // Example: Update tutor status
+                tutor.Verified = true; // Example: Update tutor status
                 await _DBcontext.SaveChangesAsync();
             }
         }
@@ -131,7 +131,7 @@ namespace UniTutor.Repository
             var tutor = await _DBcontext.Tutors.FindAsync(id);
             if (tutor != null)
             {
-                tutor.verified = false; // Example: Update tutor status
+                tutor.Verified = false; // Example: Update tutor status
                 await _DBcontext.SaveChangesAsync();
             }
         }
