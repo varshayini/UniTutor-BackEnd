@@ -31,6 +31,7 @@ namespace UniTutor.Model
         public int?  numberofcomplain {  get; set; }
 
         //navigation Property
-       // public ICollection<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
     }
 }
