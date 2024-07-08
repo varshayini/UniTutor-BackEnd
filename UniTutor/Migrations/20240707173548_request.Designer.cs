@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniTutor.DataBase;
 
@@ -11,9 +12,11 @@ using UniTutor.DataBase;
 namespace UniTutor.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240707173548_request")]
+    partial class request
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,42 +52,6 @@ namespace UniTutor.Migrations
                 });
 
             modelBuilder.Entity("UniTutor.Model.Comment", b =>
-
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("commentText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("stuId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("tutId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("userType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("stuId");
-
-                    b.HasIndex("tutId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("UniTutor.Model.Request", b =>
-
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -166,11 +133,8 @@ namespace UniTutor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ProfileUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VerificationCode")
                         .HasColumnType("nvarchar(max)");
@@ -209,6 +173,9 @@ namespace UniTutor.Migrations
 
                     b.Property<string>("phoneNumber")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("profileImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("schoolName")
@@ -270,7 +237,7 @@ namespace UniTutor.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ProfileUrl")
@@ -278,9 +245,6 @@ namespace UniTutor.Migrations
 
                     b.Property<string>("VerificationCode")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Verified")
-                        .HasColumnType("bit");
 
                     b.Property<string>("address")
                         .IsRequired()
@@ -327,6 +291,9 @@ namespace UniTutor.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("verified")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Tutors");
@@ -336,7 +303,6 @@ namespace UniTutor.Migrations
                 {
                     b.HasOne("UniTutor.Model.Student", "Student")
                         .WithMany("Comments")
-
                         .HasForeignKey("stuId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -344,7 +310,6 @@ namespace UniTutor.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("tutId")
                         .OnDelete(DeleteBehavior.Cascade);
-
 
                     b.Navigation("Student");
 
@@ -401,18 +366,11 @@ namespace UniTutor.Migrations
                     b.Navigation("Requests");
                 });
 
-            modelBuilder.Entity("UniTutor.Model.Student", b =>
-                {
-                    b.Navigation("Comments");
-                });
-
             modelBuilder.Entity("UniTutor.Model.Tutor", b =>
                 {
                     b.Navigation("Comments");
 
-
                     b.Navigation("Requests");
-
 
                     b.Navigation("Subjects");
                 });

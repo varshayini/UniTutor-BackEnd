@@ -30,7 +30,12 @@ namespace UniTutor.Model
 
         public ICollection<Subject> Subjects { get; set; }
        
+
+       
+        public virtual ICollection<Request> Requests { get; set; }
+
        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
 
        
 

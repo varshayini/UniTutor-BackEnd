@@ -18,15 +18,41 @@ public class ApplicationDBContext:DbContext
     public DbSet<Comment> Comments { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Configure the Student entity
         modelBuilder.Entity<Student>()
-                .HasMany(s => s.Comments)
-                .WithOne(c => c.Student)
-                .HasForeignKey(c => c.stuId);
+            .HasMany(s => s.Comments)
+            .WithOne(c => c.Student)
+            .HasForeignKey(c => c.stuId)
+            .OnDelete(DeleteBehavior.Cascade);
 
+        // Configure the Tutor entity
         modelBuilder.Entity<Tutor>()
             .HasMany(t => t.Comments)
             .WithOne(c => c.Tutor)
-            .HasForeignKey(c => c.tutId);
+            .HasForeignKey(c => c.tutId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Configure the Comment entity
+        modelBuilder.Entity<Comment>()
+            .Property(c => c.userType)
+            .IsRequired();
+
+        modelBuilder.Entity<Comment>()
+            .Property(c => c.commentText)
+            .IsRequired();
+
+        modelBuilder.Entity<Comment>()
+            .Property(c => c.time)
+            .IsRequired();
+
+        modelBuilder.Entity<Request>()
+                       .HasOne(sr => sr.Student)
+                       .WithMany(s => s.Requests)
+                       .HasForeignKey(sr => sr.studentId)
+                       .OnDelete(DeleteBehavior.Restrict);
+        
+
+       
 
         modelBuilder.Entity<Tutor>()
                .Property(t => t.CreatedAt)
@@ -40,4 +66,21 @@ public class ApplicationDBContext:DbContext
     }
 
 
+        modelBuilder.Entity<Request>()
+            .HasOne(sr => sr.Subject)
+            .WithMany(s => s.Requests)
+            .HasForeignKey(sr => sr.subjectId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Request>()
+            .HasOne(sr => sr.Tutor)
+            .WithMany(t => t.Requests)
+            .HasForeignKey(sr => sr.tutorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }
+
+
+

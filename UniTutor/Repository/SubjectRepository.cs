@@ -21,7 +21,7 @@ namespace UniTutor.Repository
 
         }
         
-        public async Task<bool> CreateSubject(int tutorId, SubjectRequest request)
+        public async Task<bool> CreateSubject(int tutorId, SubjectRequestDto request)
         {
             var tutor = await _DBcontext.Tutors.FindAsync(tutorId);
             if (tutor == null)
@@ -77,7 +77,7 @@ namespace UniTutor.Repository
             return subject;
         }
         //update method for updating a subject withautomapper
-        public async Task<Subject> UpdateSubject(int id, SubjectRequest updateRequest)
+        public async Task<Subject> UpdateSubject(int id, SubjectRequestDto request)
         {
             var subject = await _DBcontext.Subjects.FindAsync(id);
             if (subject == null)
@@ -85,13 +85,17 @@ namespace UniTutor.Repository
                 return null;
             }
 
-            _mapper.Map(updateRequest, subject);
+            _mapper.Map(request, subject);
             await _DBcontext.SaveChangesAsync();
 
             return subject;
         }
+        //get all the subject
+        public async Task<List<Subject>> GetAllSubjects()
+        {
+            return await _DBcontext.Subjects.ToListAsync();
+        }
 
-
-
+        
     }
 }

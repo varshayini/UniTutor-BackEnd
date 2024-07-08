@@ -1,17 +1,21 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Stripe;
+using System;
 using System.Text;
 using UniTutor.DataBase;
-//using UniTutor.Configuration;
 using UniTutor.Interface;
+using UniTutor.Mapping;
 using UniTutor.Repository;
 using UniTutor.Services;
-using Microsoft.OpenApi.Models;
+
 using AutoMapper;
-using UniTutor.Mapping;
 using UniTutor.Controllers;
-using UniTutor.Respository;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +40,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
         throw new InvalidOperationException("Connection String is not found"));
 });
-//Adding AutoMapper
+
+// Adding AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Configuring JWT Authentication
@@ -60,7 +65,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-
 // Add Email Configuration
 var emailConfig = builder.Configuration
     .GetSection("EmailConfiguration")
@@ -68,17 +72,21 @@ var emailConfig = builder.Configuration
 builder.Services.AddSingleton(emailConfig);
 builder.Services.AddTransient<IEmailService, EmailService>();
 
-
+// Register repositories and services
 builder.Services.AddScoped<IAdmin, AdminRepository>();
 builder.Services.AddScoped<IStudent, StudentRepository>();
 builder.Services.AddScoped<ITutor, TutorRepository>();
 builder.Services.AddScoped<ISubject, SubjectRepository>();
-//builder.Services.AddScoped<IRequest, RequestRepository>();
-builder.Services.AddTransient<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IComment, CommentRepository>();
+builder.Services.AddTransient<IPasswordService, PasswordService>();
+builder.Services.AddTransient<IRequest, RequestRepository>();
 builder.Services.AddScoped<IAnalytics, AnalyticsRepository>();
 builder.Services.AddScoped<ICurrentUsersTotal,CurrentUsersTotalRepository>();
 builder.Services.AddScoped<ILastJoined,LastJoinedRepository>();
+// Configure Stripe API keys
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
+
 
 
 
@@ -111,18 +119,4 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-app.Run();/*{
-  "id": 0,
-  "firstName": "sdyueuadb",
-  "lastName": "jdcsucb",
-  "grade": 3,
-  "address": "cdnsihvisn",
-  "homeTown": 4,
-  "phoneNumber": "0777602179",
-  "email": "nilaxsanala2001@gmail.com",
-  "password": "nilax@123",
-  "verificationCode": "string",
-  "fileName": "string",
-  "contentType": "string",
-  "data": "string"
-}*/
+app.Run();
