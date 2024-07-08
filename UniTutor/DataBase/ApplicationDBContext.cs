@@ -60,18 +60,7 @@ public class ApplicationDBContext : DbContext
                .Property(t => t.CreatedAt)
  .HasColumnType("datetime2");
 
-        modelBuilder.Entity<Request>()
-            .HasOne(sr => sr.Subject)
-            .WithMany(s => s.Requests)
-            .HasForeignKey(sr => sr.subjectId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Request>()
-            .HasOne(sr => sr.Tutor)
-            .WithMany(t => t.Requests)
-            .HasForeignKey(sr => sr.tutorId)
-            .OnDelete(DeleteBehavior.Restrict);
-
+       
         base.OnModelCreating(modelBuilder);
     } 
 }
