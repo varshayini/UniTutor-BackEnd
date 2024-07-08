@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using UniTutor.DTO;
 using UniTutor.Interface;
 using UniTutor.Model;
 using UniTutor.Repository;
@@ -165,7 +166,7 @@ namespace UniTutor.Controllers
         [HttpPost("accepttutor/{id}")]
         public async Task<IActionResult> AcceptTutor(int id)
         {
-            var tutor = await _admin.GetTutorById(id);
+            var tutor = _admin.GetTutorById(id);
             if (tutor == null)
             {
                 return NotFound();
@@ -184,7 +185,7 @@ namespace UniTutor.Controllers
         [HttpDelete("rejecttutor/{id}")]
         public async Task<IActionResult> RejectTutor(int id)
         {
-            var tutor = await _admin.GetTutorById(id);
+            var tutor = _admin.GetTutorById(id);
             if (tutor == null)
             {
                 return NotFound();
@@ -201,6 +202,62 @@ namespace UniTutor.Controllers
             return Ok();
         }
 
+        [HttpGet("Studentdetails/{id}")]
+        public async Task<ActionResult<StudentViewMoreDto>> GetStudentDetails(int id)
+        {
+            var student = _admin.GetStudentById(id);
 
+            if (student == null)
+            {
+                return NotFound("Student not found");
+            }
+
+            var studentViewMoreDto = new StudentViewMoreDto
+            {
+                Id = student.Id,
+                firstName = student.firstName,
+                lastName = student.lastName,
+                email = student.email,
+                grade = student.grade,
+                schoolName = student.schoolName,
+                address = student.address,
+                district = student.district,
+                phoneNumber = student.phoneNumber,
+                numberofcomplain = student.numberofcomplain,
+                ProfileUrl = student.ProfileUrl,
+              
+            };
+
+            return Ok(studentViewMoreDto);
+        }
+        [HttpGet("Tutordetails/{id}")]
+        public async Task<ActionResult<TutorViewMoreDto>> GetTutorDetails(int id)
+        {
+            var tutor = _admin.GetTutorById(id);
+
+            if (tutor == null)
+            {
+                return NotFound("tutor not found");
+            }
+
+            var tutorViewMoreDto = new TutorViewMoreDto
+            {
+
+                firstName = tutor.firstName,
+                lastName = tutor.lastName,
+                occupation = tutor.occupation,
+                address = tutor.address,
+                district = tutor.district,
+                phoneNumber = tutor.phoneNumber,
+                universityMail = tutor.universityMail,
+                qualifications = tutor.qualifications,
+                cv = tutor.cv,
+                universityID = tutor.universityID,
+            };
+
+            return Ok(tutorViewMoreDto);
+        }
     }
+    
+
 }
