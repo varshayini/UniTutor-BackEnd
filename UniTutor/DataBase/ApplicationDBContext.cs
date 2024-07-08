@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using UniTutor.Model;
 namespace UniTutor.DataBase;
 
@@ -45,26 +46,19 @@ public class ApplicationDBContext : DbContext
             .Property(c => c.Date)
             .IsRequired();
 
+
         modelBuilder.Entity<Request>()
                        .HasOne(sr => sr.Student)
                        .WithMany(s => s.Requests)
                        .HasForeignKey(sr => sr.studentId)
-                       .OnDelete(DeleteBehavior.Restrict);
-
-
-
-
+ .OnDelete(DeleteBehavior.Restrict);
         modelBuilder.Entity<Tutor>()
                .Property(t => t.CreatedAt)
                .HasColumnType("datetime2"); // Ensure the type matches your MSSQL column type
 
         modelBuilder.Entity<Student>()
                .Property(t => t.CreatedAt)
-               .HasColumnType("datetime2");
-
-        base.OnModelCreating(modelBuilder);
-
-
+ .HasColumnType("datetime2");
 
         modelBuilder.Entity<Request>()
             .HasOne(sr => sr.Subject)
