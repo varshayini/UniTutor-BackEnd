@@ -50,6 +50,21 @@ public class ApplicationDBContext:DbContext
                        .WithMany(s => s.Requests)
                        .HasForeignKey(sr => sr.studentId)
                        .OnDelete(DeleteBehavior.Restrict);
+        
+
+       
+
+        modelBuilder.Entity<Tutor>()
+               .Property(t => t.CreatedAt)
+               .HasColumnType("datetime2"); // Ensure the type matches your MSSQL column type
+
+        modelBuilder.Entity<Student>()
+               .Property(t => t.CreatedAt)
+               .HasColumnType("datetime2");
+
+        base.OnModelCreating(modelBuilder);
+    }
+
 
         modelBuilder.Entity<Request>()
             .HasOne(sr => sr.Subject)

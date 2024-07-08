@@ -26,12 +26,17 @@ namespace UniTutor.Model
         public string password { get; set; }
         public string? VerificationCode { get; set; }
 
-        public string? profileImage { get; set; }
-        public DateTime? CreationDate { get; set;}
+        public string? ProfileUrl { get; set; }
+        public DateTime CreatedAt { get; set;}
         public int?  numberofcomplain {  get; set; }
 
+
         //navigation Property
-        public ICollection<Comment> Comments { get; set; }
+       
         public virtual ICollection<Request> Requests { get; set; }
+
+       // navigation Property
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
     }
 }

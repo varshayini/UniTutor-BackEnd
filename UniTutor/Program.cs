@@ -12,6 +12,11 @@ using UniTutor.Mapping;
 using UniTutor.Repository;
 using UniTutor.Services;
 
+using AutoMapper;
+using UniTutor.Controllers;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -75,9 +80,15 @@ builder.Services.AddScoped<ISubject, SubjectRepository>();
 builder.Services.AddScoped<IComment, CommentRepository>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();
 builder.Services.AddTransient<IRequest, RequestRepository>();
-
+builder.Services.AddScoped<IAnalytics, AnalyticsRepository>();
+builder.Services.AddScoped<ICurrentUsersTotal,CurrentUsersTotalRepository>();
+builder.Services.AddScoped<ILastJoined,LastJoinedRepository>();
 // Configure Stripe API keys
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
+
+
+
 
 // Register Swagger generator
 builder.Services.AddSwaggerGen(c =>

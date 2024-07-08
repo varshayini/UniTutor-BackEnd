@@ -22,17 +22,22 @@ namespace UniTutor.Model
         public string cv { get; set; }
 
         public string universityID { get; set; }
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreatedAt { get; set; }
         public string? ProfileUrl { get; set; }
 
-        public bool verified { get; set; }=false;
+        public bool Verified { get; set; }=false;
         public string? VerificationCode { get; set; }
 
         public ICollection<Subject> Subjects { get; set; }
        
-        public ICollection<Comment> Comments { get; set; }
+
+       
         public virtual ICollection<Request> Requests { get; set; }
 
+       public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+
+       
 
 
     }
