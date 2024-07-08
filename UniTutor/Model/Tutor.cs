@@ -29,8 +29,10 @@ namespace UniTutor.Model
         public string? VerificationCode { get; set; }
 
         public ICollection<Subject> Subjects { get; set; }
-       
-       public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+        public virtual ICollection<Request> Requests { get; set; }
+
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
        
 

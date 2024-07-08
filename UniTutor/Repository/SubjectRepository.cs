@@ -7,21 +7,21 @@ using UniTutor.Model;
 
 namespace UniTutor.Repository
 {
-    public class SubjectRepository: ISubject
+    public class SubjectRepository : ISubject
     {
         private ApplicationDBContext _DBcontext;
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
 
-        public SubjectRepository(ApplicationDBContext DBcontext, IConfiguration config,IMapper mapper)
+        public SubjectRepository(ApplicationDBContext DBcontext, IConfiguration config, IMapper mapper)
         {
             _DBcontext = DBcontext;
             _config = config;
             _mapper = mapper;
 
         }
-        
-        public async Task<bool> CreateSubject(int tutorId, SubjectRequest request)
+
+        public async Task<bool> CreateSubject(int tutorId, SubjectRequestDto request)
         {
             var tutor = await _DBcontext.Tutors.FindAsync(tutorId);
             if (tutor == null)
@@ -39,7 +39,7 @@ namespace UniTutor.Repository
                 availability = request.availability,
                 tutorId = tutorId,
 
-             };
+            };
 
             _DBcontext.Subjects.Add(subject);
             await _DBcontext.SaveChangesAsync();
@@ -77,7 +77,7 @@ namespace UniTutor.Repository
             return subject;
         }
         //update method for updating a subject withautomapper
-        public async Task<Subject> UpdateSubject(int id, SubjectRequest updateRequest)
+        public async Task<Subject> UpdateSubject(int id, SubjectRequestDto request)
         {
             var subject = await _DBcontext.Subjects.FindAsync(id);
             if (subject == null)
@@ -85,12 +85,16 @@ namespace UniTutor.Repository
                 return null;
             }
 
-            _mapper.Map(updateRequest, subject);
+            _mapper.Map(request, subject);
             await _DBcontext.SaveChangesAsync();
 
             return subject;
         }
-
+        //get all the subject
+        public async Task<List<Subject>> GetAllSubjects()
+        {
+            return await _DBcontext.Subjects.ToListAsync();
+        }
 
 
     }

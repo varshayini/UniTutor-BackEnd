@@ -24,8 +24,8 @@ namespace UniTutor.Controllers
         }
 
         // POST method to create a new subject
-        [HttpPost("createsubject{tutorId}")]
-        public async Task<IActionResult> CreateSubject(int tutorId, [FromBody] SubjectRequest request)
+        [HttpPost("createsubject/{tutorId}")]
+        public async Task<IActionResult> CreateSubject(int tutorId, [FromBody] SubjectRequestDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -45,7 +45,7 @@ namespace UniTutor.Controllers
         [HttpGet("getsubject/{tutorId}/{id}")]
         public async Task<IActionResult> GetSubject(int tutorId, int id)
         {
-            var subject =  _subject.GetSubject(tutorId, id);
+            var subject = _subject.GetSubject(tutorId, id);
             if (subject == null)
             {
                 return NotFound();
@@ -63,7 +63,7 @@ namespace UniTutor.Controllers
             return Ok(subjects);
         }
         //delete method to delete a subject
-        [HttpDelete("delete{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteSubject(int id)
         {
             var subject = await _subject.DeleteSubject(id);
@@ -74,10 +74,10 @@ namespace UniTutor.Controllers
 
             return Ok(subject);
         }
-        [HttpPut("update{id}")]
-        public async Task<IActionResult> UpdateSubject(int id, [FromBody] SubjectRequest updateRequest)
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateSubject(int id, [FromBody] SubjectRequestDto request)
         {
-            var subject = await _subject.UpdateSubject(id, updateRequest);
+            var subject = await _subject.UpdateSubject(id, request);
             if (subject == null)
             {
                 return NotFound(new { message = "Subject not found" });
@@ -85,11 +85,22 @@ namespace UniTutor.Controllers
 
             return Ok(subject);
         }
+        //get all the subject
+        [HttpGet("getall")]
+        public async Task<IActionResult> GetAllSubjects()
+        {
+            var subjects = await _subject.GetAllSubjects();
+            if (subjects == null || !subjects.Any())
+            {
+                return NotFound(new { message = "No subjects found" });
+            }
+            return Ok(subjects);
+        }
 
 
 
 
 
     }
-    
+
 }

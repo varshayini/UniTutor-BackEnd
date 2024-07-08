@@ -12,9 +12,11 @@ namespace UniTutor.Mapping
             CreateMap<Tutor, UpdateTutor>().ReverseMap();
 
             CreateMap<Student, StudentRegistration>().ReverseMap();
-            CreateMap<Student,UpdateStudent>().ReverseMap();
+            CreateMap<Student, UpdateStudent>().ReverseMap();
 
-            CreateMap<Subject, SubjectRequest>().ReverseMap();
+            CreateMap<Subject, SubjectRequestDto>().ReverseMap();
+
+
         }
 
     }

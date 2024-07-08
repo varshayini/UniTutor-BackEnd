@@ -1,110 +1,137 @@
-﻿//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
-//using UniTutor.Interface;
-//using UniTutor.Model;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using UniTutor.Interface;
+using UniTutor.Model;
 
-//namespace UniTutor.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class RequestController : ControllerBase
-//    {
-//        private readonly IRequest _request;
-//        private readonly ITutor _tutor;
-//        private readonly IConfiguration _config;
-//        public RequestController(IConfiguration config,IRequest request,ITutor tutor )
-//        {
-//            _request = request;
-//            _tutor = tutor;
-//            _config = config;
-//        }
+namespace UniTutor.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RequestController : ControllerBase
+    {
+        private readonly IRequest _request;
+        private readonly ITutor _tutor;
+        private readonly IConfiguration _config;
+        public RequestController(IConfiguration config, IRequest request, ITutor tutor)
+        {
+            _request = request;
+            _tutor = tutor;
+            _config = config;
+        }
 
-//        //create request by studnet id and tutor id and a request object
-//        [HttpPost("createrequest/{studentId}/{tutorId}")]
-//        public async Task<IActionResult> CreateRequest(int studentId, int tutorId, [FromBody] Request request)
-//        {
-//            request.studentId = studentId;
-//            request.tutorId = tutorId;
-//            var result = await _request.CreateRequest(request);
-//            if (result)
-//            { 
-//                return Ok();
-//            }
-//            else
-//            {
-//                return BadRequest();
-//            }
-//        }
+        // GET: api/SubjectRequests
+        [HttpGet]
+        public ActionResult<string> Get()
+        {
+            return "SubjectRequest Route";
+        }
 
-//        [HttpGet("getallrequests")]
-//        public async Task<IActionResult> GetAllRequests()
-//        {
-//            var requests = await _request.GetAllRequests();
-//            return Ok(requests);
-//        }
-//        [HttpGet("getallrequestsbytutorid/{tutorId}")]
-//        public async Task<IActionResult> GetAllRequestsByTutorId(int tutorId)
-//        {
-//            var requests = await _request.GetAllRequestsByTutorId(tutorId); ;
-//            return Ok(requests);
-//        }
+        // POST: api/SubjectRequests/request
+        [HttpPost("request")]
+        public async Task<ActionResult<Request>> CreateSubjectRequest([FromBody] Request request)
+        {
+            try
+            {
+                var newrequest = await _request.Create(request);
+                return CreatedAtAction(nameof(GetSubjectRequestById), new { id = newrequest.subjectId }, newrequest);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
-//        [HttpGet("getallacceptedrequestsbytutorid/{tutorId}")]
-//        public async Task<IActionResult> GetAllAcceptedRequestsByTutorId(int tutorId)
-//        {
-//            var requests = await _request.GetAllAcceptedRequestsByTutorId(tutorId);
-//            return Ok(requests);
-//        }
-//        [HttpGet("getallrequestsbystudentid/{studentId}")]
-//        public async Task<IActionResult> GetAllRequestsByStudentId(int studentId)
-//        {
-//            var requests = await _request.GetAllRequestsByStudentId(studentId);
-//            return Ok(requests);
-//        }
+        // GET: api/SubjectRequests/student/{id}
+        [HttpGet("student/{id}")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByStudentId(int id)
+        {
+            try
+            {
+                var requests = await _request.GetByStudentId(id);
+                return Ok(requests);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
-//        [HttpGet("getallacceptedrequestsbystudentid/{studentId}")]
-//        public async Task<IActionResult> GetAllAcceptedRequestsByStudentId(int studentId)
-//        {
-//            var requests = await _request.GetAllAcceptedRequestsByStudentId(studentId);
-//            return Ok(requests);
-//        }
-        
-       
+        // GET: api/SubjectRequests/tutor/{id}
+        [HttpGet("tutor/{id}")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByTutorId(int id)
+        {
+            try
+            {
+                var requests = await _request.GetByTutorId(id);
+                return Ok(requests);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
-//        [HttpPost("acceptrequest/{id}")]
-//        public async Task<IActionResult> Acceptequest(int id)
-//        {
-//            var request = _request.GetRequestById(id);
-//            if (request == null)
-//            {
-//                return NotFound();
-//            }
+        // DELETE: api/SubjectRequests/request/{id}
+        [HttpDelete("request/{id}")]
+        public async Task<ActionResult<Request>> DeleteSubjectRequest(int id)
+        {
+            try
+            {
+                var request = await _request.Delete(id);
+                if (request == null)
+                {
+                    return NotFound();
+                }
 
-//            // Perform acceptance logic
-//            await _request.AcceptRequest(id);
+                return Ok(request);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
-//            return Ok();
-//        }
+        // PUT: api/SubjectRequests/request/{id}
+        [HttpPut("request/{id}")]
+        public async Task<ActionResult<Request>> UpdateSubjectRequestStatus(int id, [FromBody] Request request)
+        {
+            if (request.status == null)
+            {
+                return BadRequest("Status is required");
+            }
 
-//        [HttpDelete("rejectrequest/{id}")]
-//        public async Task<IActionResult> RejectTutor(int id)
-//        {
-//            var request = _request.GetRequestById(id);
-//            if (request == null)
-//            {
-//                return NotFound();
-//            }
+            try
+            {
+                var updatedRequest = await _request.UpdateStatus(id, request.status);
+                if (updatedRequest == null)
+                {
+                    return NotFound();
+                }
 
-//            // Perform rejection logic
-//            await _request.RejectRequest(id);
+                return Ok(updatedRequest);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        // GET: api/SubjectRequests/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Request>> GetSubjectRequestById(int id)
+        {
+            var request = await _request.GetById(id);
+
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(request);
 
 
 
-//            return Ok();
-//        }
-        
-       
-        
 
-//    }
-//}
+        }
+    }
+}
