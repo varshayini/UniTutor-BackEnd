@@ -45,7 +45,7 @@ namespace UniTutor.Controllers
         [HttpGet("getsubject/{tutorId}/{id}")]
         public async Task<IActionResult> GetSubject(int tutorId, int id)
         {
-            var subject =  _subject.GetSubject(tutorId, id);
+            var subject = _subject.GetSubject(tutorId, id);
             if (subject == null)
             {
                 return NotFound();
@@ -102,5 +102,5 @@ namespace UniTutor.Controllers
 
 
     }
-    
+
 }
