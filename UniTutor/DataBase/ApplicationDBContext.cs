@@ -74,11 +74,6 @@ public class ApplicationDBContext : DbContext
             .HasForeignKey(sr => sr.tutorId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        base.OnModelCreating(modelBuilder);
-}
-}
-
-
 
         modelBuilder.Entity<Request>()
             .HasOne(sr => sr.Subject)

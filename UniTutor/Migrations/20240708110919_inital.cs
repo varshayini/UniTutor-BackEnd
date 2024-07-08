@@ -97,41 +97,11 @@ namespace UniTutor.Migrations
                         name: "FK_Comments_Students_stuId",
                         column: x => x.stuId,
                         principalTable: "Students",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Comments_Tutors_tutId",
-                        column: x => x.tutId,
-                        principalTable: "Tutors",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Requests",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    medium = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    availability = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    mode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    status = table.Column<bool>(type: "bit", nullable: false),
-                    studentId = table.Column<int>(type: "int", nullable: false),
-                    tutorId = table.Column<int>(type: "int", nullable: false),
-                    subjectId = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Requests", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Requests_Students_studentId",
-                        column: x => x.studentId,
-                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Requests_Tutors_tutorId",
-                        column: x => x.tutorId,
+                        name: "FK_Comments_Tutors_tutId",
+                        column: x => x.tutId,
                         principalTable: "Tutors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -141,7 +111,7 @@ namespace UniTutor.Migrations
                 name: "Subjects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    _id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -149,23 +119,53 @@ namespace UniTutor.Migrations
                     medium = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     mode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     availability = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    tutorId = table.Column<int>(type: "int", nullable: false),
-                    RequestId = table.Column<int>(type: "int", nullable: true)
+                    tutorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subjects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subjects_Requests_RequestId",
-                        column: x => x.RequestId,
-                        principalTable: "Requests",
-                        principalColumn: "Id");
+                    table.PrimaryKey("PK_Subjects", x => x._id);
                     table.ForeignKey(
                         name: "FK_Subjects_Tutors_tutorId",
                         column: x => x.tutorId,
                         principalTable: "Tutors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Requests",
+                columns: table => new
+                {
+                    subjectRequestId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    subjectId = table.Column<int>(type: "int", nullable: false),
+                    studentId = table.Column<int>(type: "int", nullable: false),
+                    tutorId = table.Column<int>(type: "int", nullable: false),
+                    studentEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requests", x => x.subjectRequestId);
+                    table.ForeignKey(
+                        name: "FK_Requests_Students_studentId",
+                        column: x => x.studentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Requests_Subjects_subjectId",
+                        column: x => x.subjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "_id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Requests_Tutors_tutorId",
+                        column: x => x.tutorId,
+                        principalTable: "Tutors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -184,14 +184,14 @@ namespace UniTutor.Migrations
                 column: "studentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Requests_subjectId",
+                table: "Requests",
+                column: "subjectId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Requests_tutorId",
                 table: "Requests",
                 column: "tutorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subjects_RequestId",
-                table: "Subjects",
-                column: "RequestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subjects_tutorId",
@@ -209,13 +209,13 @@ namespace UniTutor.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Subjects");
-
-            migrationBuilder.DropTable(
                 name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "Subjects");
 
             migrationBuilder.DropTable(
                 name: "Tutors");
