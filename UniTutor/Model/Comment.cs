@@ -1,8 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniTutor.Model
 {
+
 
     public class Comment
     {
@@ -21,6 +25,7 @@ namespace UniTutor.Model
         [NotMapped]
         public string? fullName => userType == "Student" ? $"{Student.firstName} {Student.lastName}" : $"{Tutor.firstName} {Tutor.lastName}";
     }
+
 
 
 }

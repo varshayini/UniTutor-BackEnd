@@ -1,4 +1,6 @@
+
 ﻿namespace UniTutor.DTO
+
 {
     public class SubjectRequestDto
     {
@@ -10,5 +12,7 @@
         public string? mode { get; set; }
         public string[]? availability { get; set; }
 
-    }
+        
+    } 
 }
+

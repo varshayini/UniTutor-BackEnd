@@ -30,10 +30,16 @@ namespace UniTutor.Model
         public DateTime CreatedAt { get; set;}
         public int?  numberofcomplain {  get; set; }
 
+
+        //navigation Property
+       
+        public virtual ICollection<Request> Requests { get; set; }
+
        // navigation Property
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         public  virtual ICollection<Request> Requests { get; set; }
+
     }
 
 }

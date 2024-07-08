@@ -43,7 +43,9 @@ public class ApplicationDBContext : DbContext
             .IsRequired();
 
         modelBuilder.Entity<Comment>()
+
             .Property(c => c.Date)
+
             .IsRequired();
 
         modelBuilder.Entity<Request>()
@@ -75,5 +77,24 @@ public class ApplicationDBContext : DbContext
         base.OnModelCreating(modelBuilder);
 }
 }
+
+
+
+        modelBuilder.Entity<Request>()
+            .HasOne(sr => sr.Subject)
+            .WithMany(s => s.Requests)
+            .HasForeignKey(sr => sr.subjectId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Request>()
+            .HasOne(sr => sr.Tutor)
+            .WithMany(t => t.Requests)
+            .HasForeignKey(sr => sr.tutorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        base.OnModelCreating(modelBuilder);
+    }
+}
+
 
 

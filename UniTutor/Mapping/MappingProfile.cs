@@ -17,6 +17,9 @@ namespace UniTutor.Mapping
             CreateMap<Subject, SubjectRequestDto>().ReverseMap();
 
 
+            CreateMap<Subject, SubjectRequestDto>().ReverseMap();
+
+
         }
 
     }
