@@ -17,9 +17,12 @@ namespace UniTutor.Interface
 
         public bool isUser(string email);
         Task<Tutor> GetTutorAsync(int id);
-        Task UpdateTutorAsync(Tutor tutor);
-        public Task<Tutor> UpdateTutorProfile(int id, UpdateTutor updatedtutor);
-        
+      
+        Task UpdateAsync(Tutor tutor);
+
+        Task<Tutor> GetByIdAsync(int id);
+
+        Task<TutorDashboardDetailsDto> GetTutorDashboardDetails(int tutorId);
 
 
 

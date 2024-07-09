@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using AutoMapper;
+using Azure.Core;
 using UniTutor.DTO;
 using UniTutor.Model;
 
@@ -15,15 +16,17 @@ namespace UniTutor.Interface
         public bool SignOut();
        // public bool CreateRequest(Model.Request request);
        // public bool DeleteRequest(Model.Request request);
+       
         public Task<bool> Update(Student student);
-        Task<Student> GetStudentAsync(int id);
-        Task AddStudentAsync(Student student);
-        
         Task DeleteStudentAsync(int id);
-        public Task<bool> UpdateStudentProfile(int id, UpdateStudent updateStudentRequest);
+        
 
+        //update student using studentUpdateDto
+        Task UpdateAsync(Student student);
 
+        Task<Student> GetByIdAsync(int id);
 
+        Task<StudentDashboardDeatilsDto> GetStudentDashboardDetails(int studentId);
 
 
     }

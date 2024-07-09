@@ -100,7 +100,26 @@ r
             await _DBcontext.SaveChangesAsync();
             return request;
         }
+        public async Task<int> GetMySubjectsCount(int studentId)
+        {
+            return await _DBcontext.Requests
+                                 .Where(sr => sr.studentId == studentId)
+                                 .CountAsync();
+        }
 
+        public async Task<int> GetAcceptedRequestsCount(int studentId)
+        {
+            return await _DBcontext.Requests
+                                 .Where(sr => sr.studentId == studentId && sr.IsAccepted)
+                                 .CountAsync();
+        }
+
+        public async Task<int> GetRejectedRequestsCount(int studentId)
+        {
+            return await _DBcontext.Requests
+                                 .Where(sr => sr.studentId == studentId && sr.IsRejected)
+                                 .CountAsync();
+        }
 
 
 

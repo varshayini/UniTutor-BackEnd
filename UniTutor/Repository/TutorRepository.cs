@@ -125,46 +125,40 @@ namespace UniTutor.Repository
             return await _DBcontext.Tutors.FindAsync(id);
         }
 
-        public async Task UpdateTutorAsync(Tutor tutor)
+        public async Task UpdateAsync(Tutor tutor)
         {
             _DBcontext.Tutors.Update(tutor);
             await _DBcontext.SaveChangesAsync();
         }
-        public async Task<Tutor> UpdateTutorProfile(int id, UpdateTutor updatedtutor)
+
+        public async Task<Tutor> GetByIdAsync(int id)
         {
-            var tutor = await _DBcontext.Tutors.FindAsync(id);
-            if (tutor == null)
-            {
-                return null;
-            }
+            return await _DBcontext.Tutors.FindAsync(id);
+        }
 
-            if (updatedtutor.firstName != null)
-            {
-                tutor.firstName = updatedtutor.firstName;
-            }
-            if (updatedtutor.lastName != null)
-            {
-                tutor.lastName = updatedtutor.lastName;
-            }
-            if (updatedtutor.address != null)
-            {
-                tutor.address = updatedtutor.address;
-            }
-            //if (updatedtutor.Subject != null)
-            //{
-            //    tutor.subjects = updatedtutor.Subjects;
-            //}
-            if (updatedtutor.profileUrl != null)
-            {
-                tutor.ProfileUrl = updatedtutor.profileUrl;
-            }
-
-            _DBcontext.Tutors.Update(tutor);
-            await _DBcontext.SaveChangesAsync();
+        public async Task<TutorDashboardDetailsDto> GetTutorDashboardDetails(int tutorId)
+        {
+            var tutor = await _DBcontext.Tutors
+                .Where(s => s.Id == tutorId)
+                .Select(s => new TutorDashboardDetailsDto
+                {
+                    firstName = s.firstName,
+                    lastName = s.lastName,
+                    universityMail=s.universityMail,
+                    phoneNumber = s.phoneNumber,
+                    ProfileUrl = s.ProfileUrl,
+                    occupation = s.occupation,
+                    address = s.address,
+                    district = s.district,
+                    qualifications = s.qualifications
+                    
+                })
+                .FirstOrDefaultAsync();
 
             return tutor;
         }
-        
+
+
 
 
     }

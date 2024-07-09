@@ -35,5 +35,10 @@ namespace UniTutor.Model
         public virtual Student Student { get; set; }
         public virtual Subject Subject { get; set; }
         public virtual Tutor Tutor { get; set; }
+
+        public bool IsAccepted { get; set; }
+        public bool IsRejected { get; set; }
+
+
     }
 }

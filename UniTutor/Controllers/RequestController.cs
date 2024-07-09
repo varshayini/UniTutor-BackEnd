@@ -133,6 +133,29 @@ namespace UniTutor.Controllers
 
             return Ok(request);
 
+
+        }
+
+        [HttpGet("{studentId}/mysubjects")]
+        public async Task<IActionResult> GetMySubjectsCount(int studentId)
+        {
+            var count = await _request.GetMySubjectsCount(studentId);
+            return Ok(count);
+        }
+
+        [HttpGet("{studentId}/acceptedrequests")]
+        public async Task<IActionResult> GetAcceptedRequestsCount(int studentId)
+        {
+            var count = await _request.GetAcceptedRequestsCount(studentId);
+            return Ok(count);
+        }
+
+        [HttpGet("{studentId}/rejectedrequests")]
+        public async Task<IActionResult> GetRejectedRequestsCount(int studentId)
+        {
+            var count = await _request.GetRejectedRequestsCount(studentId);
+            return Ok(count);
+
         }
     }
 }
