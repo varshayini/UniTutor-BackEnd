@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniTutor.DataBase;
+using UniTutor.DTO;
 using UniTutor.Interface;
 using UniTutor.Model;
 
@@ -39,17 +40,38 @@ namespace UniTutor.Repository
         public async Task<IEnumerable<Request>> GetByTutorId(int tutorId)
         {
             return await _DBcontext.Requests
-                .Where(sr => sr.tutorId == tutorId)
+
+                .Where(sr => sr.tutorId == tutorId) // Adjust according to your entity's property
                 .Include(sr => sr.Subject)
                 .Include(sr => sr.Student)
                 .ToListAsync();
         }
 
-        public async Task<Request> Create(Request request)
+        public async Task<Request> Create(RequestDto request)
         {
-            _DBcontext.Requests.Add(request);
-            await _DBcontext.SaveChangesAsync();
-            return request;
+            var srequest = new Request
+            {
+                studentId = request.studentId,
+                subjectId = request.subjectId,
+                tutorId = request.tutorId,
+                studentEmail = request.studentEmail,
+
+                // status = request.status ?? "PENDING",
+r
+                timestamp = DateTime.UtcNow
+            };
+
+            try
+            {
+                _DBcontext.Requests.Add(srequest);
+                await _DBcontext.SaveChangesAsync();
+                return srequest;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here
+                throw new Exception("An error occurred while creating the request.", ex);
+            }
         }
 
         public async Task<Request> UpdateStatus(int id, string status)

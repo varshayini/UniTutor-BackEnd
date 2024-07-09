@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UniTutor.DTO;
 using UniTutor.Interface;
 using UniTutor.Model;
+using UniTutor.Repository;
 
 namespace UniTutor.Controllers
 {
@@ -25,23 +27,26 @@ namespace UniTutor.Controllers
         {
             return "SubjectRequest Route";
         }
-
-        // POST: api/SubjectRequests/request
+       // POST: api/SubjectRequests/request
         [HttpPost("request")]
-        public async Task<ActionResult<Request>> CreateSubjectRequest([FromBody] Request request)
+        public async Task<ActionResult<RequestDto>> CreateSubjectRequest([FromBody] RequestDto request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
-                var newrequest = await _request.Create(request);
-                return CreatedAtAction(nameof(GetSubjectRequestById), new { id = newrequest.subjectId }, newrequest);
+                var newRequest = await _request.Create(request);
+                return CreatedAtAction(nameof(GetSubjectRequestById), new { id = newRequest.subjectId }, newRequest);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                return StatusCode(500, new { message = ex.Message });
+                return StatusCode(500, new { message = ex.Message, stackTrace = ex.StackTrace });
             }
         }
 
-        // GET: api/SubjectRequests/student/{id}
+       // GET: api/SubjectRequests/student/{id}
         [HttpGet("student/{id}")]
         public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByStudentId(int id)
         {
@@ -55,10 +60,9 @@ namespace UniTutor.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-
-        // GET: api/SubjectRequests/tutor/{id}
+        //get the detils by id
         [HttpGet("tutor/{id}")]
-        public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByTutorId(int id)
+       public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByTutorId(int id)
         {
             try
             {
@@ -129,6 +133,7 @@ namespace UniTutor.Controllers
 
             return Ok(request);
 
+
         }
 
         [HttpGet("{studentId}/mysubjects")]
@@ -150,6 +155,7 @@ namespace UniTutor.Controllers
         {
             var count = await _request.GetRejectedRequestsCount(studentId);
             return Ok(count);
+
         }
     }
 }
