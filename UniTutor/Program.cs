@@ -14,6 +14,7 @@ using UniTutor.Services;
 
 using AutoMapper;
 using UniTutor.Controllers;
+using UniTutor.Respository;
 
 
 
@@ -21,6 +22,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+//// Add services to the container.
+//builder.Services.AddControllers()
+//    .AddJsonOptions(options =>
+//    {
+//        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+//    });
 
 // CORS Configuration (if needed)
 builder.Services.AddCors(options =>

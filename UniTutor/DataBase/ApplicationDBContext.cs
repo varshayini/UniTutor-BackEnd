@@ -42,7 +42,7 @@ public class ApplicationDBContext:DbContext
             .IsRequired();
 
         modelBuilder.Entity<Comment>()
-            .Property(c => c.time)
+            .Property(c => c.Date)
             .IsRequired();
 
         modelBuilder.Entity<Request>()
@@ -50,9 +50,9 @@ public class ApplicationDBContext:DbContext
                        .WithMany(s => s.Requests)
                        .HasForeignKey(sr => sr.studentId)
                        .OnDelete(DeleteBehavior.Restrict);
-        
 
-       
+
+
 
         modelBuilder.Entity<Tutor>()
                .Property(t => t.CreatedAt)
@@ -63,7 +63,7 @@ public class ApplicationDBContext:DbContext
                .HasColumnType("datetime2");
 
         base.OnModelCreating(modelBuilder);
-    }
+
 
 
         modelBuilder.Entity<Request>()
@@ -80,7 +80,8 @@ public class ApplicationDBContext:DbContext
 
         base.OnModelCreating(modelBuilder);
     }
-}
+    }
+
 
 
 

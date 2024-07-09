@@ -2,7 +2,7 @@
 {
     public class SubjectRequestDto
     {
-        //public int? _id { get; set; }
+        /*public int? _id { get; set; }*/
         public string? title { get; set; }
         public string? description { get; set; }
         public string? coverImage { get; set; }
