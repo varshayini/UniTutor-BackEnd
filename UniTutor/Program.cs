@@ -13,9 +13,7 @@ using UniTutor.Repository;
 using UniTutor.Services;
 using AutoMapper;
 using UniTutor.Controllers;
-
-
-
+using UniTutor.Respository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,12 +81,9 @@ builder.Services.AddTransient<IRequest, RequestRepository>();
 builder.Services.AddScoped<IAnalytics, AnalyticsRepository>();
 builder.Services.AddScoped<ICurrentUsersTotal,CurrentUsersTotalRepository>();
 builder.Services.AddScoped<ILastJoined,LastJoinedRepository>();
+
 // Configure Stripe API keys
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
-
-
-
-
 
 // Register Swagger generator
 builder.Services.AddSwaggerGen(c =>
@@ -107,7 +102,6 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "UniTutor API v1");
     });
 }
-
 app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigin");
 app.UseRouting();
