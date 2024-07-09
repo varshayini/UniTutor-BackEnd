@@ -7,20 +7,20 @@ using UniTutor.Model;
 
 namespace UniTutor.Repository
 {
-    public class SubjectRepository: ISubject
+    public class SubjectRepository : ISubject
     {
         private ApplicationDBContext _DBcontext;
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
 
-        public SubjectRepository(ApplicationDBContext DBcontext, IConfiguration config,IMapper mapper)
+        public SubjectRepository(ApplicationDBContext DBcontext, IConfiguration config, IMapper mapper)
         {
             _DBcontext = DBcontext;
             _config = config;
             _mapper = mapper;
 
         }
-        
+
         public async Task<bool> CreateSubject(int tutorId, SubjectRequestDto request)
         {
             var tutor = await _DBcontext.Tutors.FindAsync(tutorId);
@@ -39,7 +39,7 @@ namespace UniTutor.Repository
                 availability = request.availability,
                 tutorId = tutorId,
 
-             };
+            };
 
             _DBcontext.Subjects.Add(subject);
             await _DBcontext.SaveChangesAsync();
@@ -96,6 +96,6 @@ namespace UniTutor.Repository
             return await _DBcontext.Subjects.ToListAsync();
         }
 
-        
+
     }
 }

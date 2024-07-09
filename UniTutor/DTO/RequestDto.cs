@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using UniTutor.Model;
+
 
 namespace UniTutor.DTO
 {
     public class RequestDto
     {
+
        
         public int subjectRequestId { get; set; }
 
@@ -12,9 +15,7 @@ namespace UniTutor.DTO
 
         public int studentId { get; set; }
         public int tutorId { get; set; }
-        public string studentEmail { get; set; }
-
-        [Required]
+        public string studentEmail { get; set; } 
         public DateTime timestamp { get; set; }
 
     }

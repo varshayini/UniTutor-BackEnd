@@ -40,11 +40,13 @@ namespace UniTutor.Repository
         public async Task<IEnumerable<Request>> GetByTutorId(int tutorId)
         {
             return await _DBcontext.Requests
+
                 .Where(sr => sr.tutorId == tutorId) // Adjust according to your entity's property
                 .Include(sr => sr.Subject)
                 .Include(sr => sr.Student)
                 .ToListAsync();
         }
+
         public async Task<Request> Create(RequestDto request)
         {
             var srequest = new Request
@@ -53,7 +55,9 @@ namespace UniTutor.Repository
                 subjectId = request.subjectId,
                 tutorId = request.tutorId,
                 studentEmail = request.studentEmail,
+
                 // status = request.status ?? "PENDING",
+r
                 timestamp = DateTime.UtcNow
             };
 
@@ -101,4 +105,6 @@ namespace UniTutor.Repository
 
 
     }
+
 }
+

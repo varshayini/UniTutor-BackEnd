@@ -107,11 +107,11 @@ namespace UniTutor.Repository
         {
             return _DBcontext.Tutors.ToList();
         }
-        public async Task<Tutor> GetTutorById(int id)
+        public Tutor GetTutorById(int id)
         {
             // Example implementation, ensure it handles null case
-            var tutor = await _DBcontext.Tutors.FindAsync(id);
-            return tutor ?? throw new Exception($"Tutor with id {id} not found");
+            return  _DBcontext.Tutors.Find(id);
+          
         }
 
         public async Task AcceptTutor(int id)
@@ -138,6 +138,10 @@ namespace UniTutor.Repository
         public bool Logout()
         {
             throw new NotImplementedException();
+        }
+        public Student GetStudentById(int id)
+        {
+            return _DBcontext.Students.Find(id);
         }
     }
 }

@@ -27,8 +27,7 @@ namespace UniTutor.Controllers
         {
             return "SubjectRequest Route";
         }
-
-        // POST: api/SubjectRequests/request
+       // POST: api/SubjectRequests/request
         [HttpPost("request")]
         public async Task<ActionResult<RequestDto>> CreateSubjectRequest([FromBody] RequestDto request)
         {
@@ -36,7 +35,6 @@ namespace UniTutor.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             try
             {
                 var newRequest = await _request.Create(request);
@@ -48,7 +46,7 @@ namespace UniTutor.Controllers
             }
         }
 
-        // GET: api/SubjectRequests/student/{id}
+       // GET: api/SubjectRequests/student/{id}
         [HttpGet("student/{id}")]
         public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByStudentId(int id)
         {
@@ -64,7 +62,7 @@ namespace UniTutor.Controllers
         }
         //get the detils by id
         [HttpGet("tutor/{id}")]
-        public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByTutorId(int id)
+       public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByTutorId(int id)
         {
             try
             {
@@ -134,9 +132,6 @@ namespace UniTutor.Controllers
             }
 
             return Ok(request);
-
-
-
 
         }
     }

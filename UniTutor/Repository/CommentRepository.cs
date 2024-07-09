@@ -23,9 +23,8 @@ public class CommentRepository : IComment
         await _DBcontext.SaveChangesAsync();
     }
 
-    public async Task CreateTutorCommentAsync(string commentText, DateTime time, int tutorId)
+    public async Task CreateCommentAsync(string commentText, DateTime time, int Id, string usertype)
     {
-
         // Set CreatedAt to local time
         TimeZoneInfo localZone = TimeZoneInfo.FindSystemTimeZoneById("Sri Lanka Standard Time"); // Change to your local time zone
         DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, localZone);
@@ -34,29 +33,22 @@ public class CommentRepository : IComment
         {
             commentText = commentText,
             Date = localDateTime,
-            userType = "Tutor",
-            tutId = tutorId
-
+            userType = usertype
         };
 
-        await AddCommentAsync(comment);
-    }
-
-    public async Task CreateStudentCommentAsync(string commentText, DateTime time, int studentId)
-    {
-
-        // Set CreatedAt to local time
-        TimeZoneInfo localZone = TimeZoneInfo.FindSystemTimeZoneById("Sri Lanka Standard Time"); // Change to your local time zone
-        DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, localZone);
-
-        var comment = new Comment
+        // Set the appropriate ID based on the usertype
+        if (usertype.Equals("Student", StringComparison.OrdinalIgnoreCase))
         {
-            commentText = commentText,
-            Date = localDateTime,
-
-            userType = "Student",
-            stuId = studentId
-        };
+            comment.stuId = Id;
+        }
+        else if (usertype.Equals("Tutor", StringComparison.OrdinalIgnoreCase))
+        {
+            comment.tutId = Id;
+        }
+        else
+        {
+            throw new ArgumentException("Invalid user type. Must be 'Student' or 'Tutor'.");
+        }
 
         await AddCommentAsync(comment);
     }
