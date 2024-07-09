@@ -124,7 +124,12 @@ namespace UniTutor.Repository
             _DBcontext.Students.Update(student);
             return await _DBcontext.SaveChangesAsync() > 0;
         }
-        
+
+        public bool StudentExists(int id)
+        {
+            return _DBcontext.Students.Any(e => e.Id == id);
+        }
+
         public async Task<Student> GetStudentAsync(int id)
         {
             return await _DBcontext.Students.FindAsync(id);
@@ -147,21 +152,17 @@ namespace UniTutor.Repository
                 await _DBcontext.SaveChangesAsync();
             }
         }
-        public async Task<bool> UpdateStudentProfile(int id, UpdateStudent updateStudentRequest)
+        public async Task UpdateAsync(Student student)
         {
-            var student = await _DBcontext.Students.FindAsync(id);
-
-            if (student == null)
-            {
-                return false;
-            }
-
-            _mapper.Map(updateStudentRequest, student);
+            _DBcontext.Students.Update(student);
             await _DBcontext.SaveChangesAsync();
-
-            return true;
         }
-       
+
+        public async Task<Student> GetByIdAsync(int id)
+        {
+            return await _DBcontext.Students.FindAsync(id);
+        }
+
 
     }
 }

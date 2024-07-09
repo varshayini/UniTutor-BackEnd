@@ -116,19 +116,38 @@ namespace UniTutor.Controllers
                 return Unauthorized("Invalid email or password");
             }
         }
-        [HttpPatch("update/{id}")]
-        public async Task<IActionResult> UpdateStudent(int id, [FromBody] UpdateStudent updateStudentRequest)
-        {
-            var result = await _student.UpdateStudentProfile(id, updateStudentRequest);
 
-            if (!result)
+        [HttpPut("ProfileUpdate{id}")]
+        public async Task<IActionResult> UpdateStudent(int id, [FromBody] UpdateStudentDto updateStudentDto)
+        {
+            if (id != updateStudentDto.Id)
             {
-                return NotFound(new { message = "Student not found" });
+                return BadRequest();
             }
 
-            return Ok(new { message = "Student updated successfully" });
-        }
+            var student = await _student.GetByIdAsync(id);
 
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            student.firstName = updateStudentDto.firstName;
+            student.lastName = updateStudentDto.lastName;
+            student.email = updateStudentDto.email;
+            student.phoneNumber = updateStudentDto.phoneNumber;
+            student.grade = updateStudentDto.grade;
+            student.address = updateStudentDto.address;
+
+            if (!string.IsNullOrEmpty(updateStudentDto.ProfileUrl))
+            {
+                student.ProfileUrl = updateStudentDto.ProfileUrl;
+            }
+
+            await _student.UpdateAsync(student);
+
+            return NoContent();
+        }
         //[HttpPost("requesttutor")]
         //public IActionResult requesttutor([FromBody] Request request)
         //{
@@ -157,7 +176,7 @@ namespace UniTutor.Controllers
         //    }
         //}
 
-       
+
 
 
     }
