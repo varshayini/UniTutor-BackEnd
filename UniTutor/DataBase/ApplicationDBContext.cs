@@ -43,24 +43,50 @@ public class ApplicationDBContext : DbContext
             .IsRequired();
 
         modelBuilder.Entity<Comment>()
-            .Property(c => c.Date)
-            .IsRequired();
 
+            .Property(c => c.Date)
+
+            .IsRequired();
 
         modelBuilder.Entity<Request>()
                        .HasOne(sr => sr.Student)
                        .WithMany(s => s.Requests)
                        .HasForeignKey(sr => sr.studentId)
- .OnDelete(DeleteBehavior.Restrict);
+                       .OnDelete(DeleteBehavior.Restrict);
+
         modelBuilder.Entity<Tutor>()
                .Property(t => t.CreatedAt)
                .HasColumnType("datetime2"); // Ensure the type matches your MSSQL column type
 
         modelBuilder.Entity<Student>()
                .Property(t => t.CreatedAt)
- .HasColumnType("datetime2");
+               .HasColumnType("datetime2");
 
-       
+        modelBuilder.Entity<Request>()
+                .HasOne(sr => sr.Subject)
+                .WithMany(s => s.Requests)
+                .HasForeignKey(sr => sr.subjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Request>()
+                .HasOne(sr => sr.Tutor)
+                .WithMany(t => t.Requests)
+                .HasForeignKey(sr => sr.tutorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+        modelBuilder.Entity<Request>()
+            .HasOne(sr => sr.Subject)
+            .WithMany(s => s.Requests)
+            .HasForeignKey(sr => sr.subjectId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Request>()
+            .HasOne(sr => sr.Tutor)
+            .WithMany(t => t.Requests)
+            .HasForeignKey(sr => sr.tutorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         base.OnModelCreating(modelBuilder);
     } 
 }

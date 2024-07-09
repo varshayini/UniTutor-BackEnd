@@ -4,8 +4,7 @@ namespace UniTutor.Interface
 {
     public interface IComment
     {
-        Task CreateTutorCommentAsync(string commentText, DateTime createdAt, int tutorId);
-        Task CreateStudentCommentAsync(string commentText, DateTime createdAt, int studentId);
+       Task CreateCommentAsync(string commentText, DateTime createdAt, int Id,string usertype);
         Task AddCommentAsync(Comment comment);
         public IEnumerable<Comment> GetAllComments();
 

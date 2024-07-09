@@ -18,20 +18,11 @@ public class CommentController : ControllerBase
         _comment = comment;
     }
 
-    [HttpPost("create/tutor/{tutorId}")]
-    public async Task<IActionResult> CreateTutorComment(int tutorId, [FromBody] CreateComment createCommentDto)
+    [HttpPost("create/{Id}/{usertype}")]
+    public async Task<IActionResult> CreateStudentComment(int studentId,string usertype, [FromBody] CreateComment createComment)
     {
 
-        await _comment.CreateTutorCommentAsync(createCommentDto.commentText, createCommentDto.Date, tutorId);
-
-        return Ok();
-    }
-
-    [HttpPost("create/student/{studentId}")]
-    public async Task<IActionResult> CreateStudentComment(int studentId, [FromBody] CreateComment createComment)
-    {
-
-        await _comment.CreateStudentCommentAsync(createComment.commentText, createComment.Date, studentId);
+        await _comment.CreateCommentAsync(createComment.commentText, createComment.Date, studentId,usertype);
 
         return Ok();
     }
@@ -44,8 +35,9 @@ public class CommentController : ControllerBase
             .Select(c => new
             {
                 c.Id,
-                c.commentText,
+                c.commentText, 
                 c.Date,
+                c.userType,
 
                 fullName = c.userType == "Student" ?
                            $"{c.Student.firstName} {c.Student.lastName}" :
