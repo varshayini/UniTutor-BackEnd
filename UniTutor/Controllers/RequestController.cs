@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UniTutor.DTO;
 using UniTutor.Interface;
 using UniTutor.Model;
+using UniTutor.Repository;
 
 namespace UniTutor.Controllers
 {
@@ -59,8 +60,7 @@ namespace UniTutor.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-
-        // GET: api/SubjectRequests/tutor/{id}
+        //get the detils by id
         [HttpGet("tutor/{id}")]
        public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByTutorId(int id)
         {
