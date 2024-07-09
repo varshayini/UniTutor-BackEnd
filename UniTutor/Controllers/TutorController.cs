@@ -117,17 +117,53 @@ namespace UniTutor.Controllers
             return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInTutor.Id });
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateTutor(int id, [FromBody] UpdateTutor updatedtutor)
+
+        [HttpPut("ProfileUpdate/{id}")]
+        public async Task<IActionResult> UpdateTutor(int id, [FromBody] UpdateTutorDto updateTutorDto)
         {
-            var tutor = await _tutor.UpdateTutorProfile(id, updatedtutor);
+            if (id != updateTutorDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var tutor = await _tutor.GetByIdAsync(id);
+
             if (tutor == null)
             {
                 return NotFound();
             }
 
-            return Ok(tutor);
+            tutor.firstName = updateTutorDto.firstName;
+            tutor.lastName = updateTutorDto.lastName;
+            tutor.occupation = updateTutorDto.occupation;
+            tutor.phoneNumber = updateTutorDto.phoneNumber;
+            tutor.district = updateTutorDto.district;
+            tutor.address = updateTutorDto.address;
+            tutor.qualifications = updateTutorDto.qualifications;
+            tutor.cv = updateTutorDto.cv;
+            tutor.ProfileUrl = updateTutorDto.ProfileUrl;
+
+            if (!string.IsNullOrEmpty(updateTutorDto.ProfileUrl))
+            {
+                tutor.ProfileUrl = updateTutorDto.ProfileUrl;
+            }
+
+            await _tutor.UpdateAsync(tutor);
+
+            return NoContent();
         }
+
+        [HttpGet("dashborddetails/{tutorId}")]
+        public async Task<IActionResult> GetTutorDashboardDetails(int tutorId)
+        {
+            var tutorDetails = await _tutor.GetTutorDashboardDetails(tutorId);
+            if (tutorDetails == null)
+            {
+                return NotFound();
+            }
+            return Ok(tutorDetails);
+        }
+        
 
 
 

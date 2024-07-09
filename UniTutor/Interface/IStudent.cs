@@ -16,10 +16,8 @@ namespace UniTutor.Interface
         public bool SignOut();
        // public bool CreateRequest(Model.Request request);
        // public bool DeleteRequest(Model.Request request);
+       
         public Task<bool> Update(Student student);
-        Task<Student> GetStudentAsync(int id);
-        Task AddStudentAsync(Student student);
-        
         Task DeleteStudentAsync(int id);
         
 
@@ -28,6 +26,7 @@ namespace UniTutor.Interface
 
         Task<Student> GetByIdAsync(int id);
 
+        Task<StudentDashboardDeatilsDto> GetStudentDashboardDetails(int studentId);
 
 
     }

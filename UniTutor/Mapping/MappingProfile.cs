@@ -9,7 +9,7 @@ namespace UniTutor.Mapping
         public MappingProfile()
         {
             CreateMap<Tutor, TutorRegistration>().ReverseMap();
-            CreateMap<Tutor, UpdateTutor>().ReverseMap();
+            CreateMap<Tutor, UpdateTutorDto>().ReverseMap();
 
             CreateMap<Student, StudentRegistration>().ReverseMap();
             CreateMap<Student, UpdateStudentDto>().ReverseMap();

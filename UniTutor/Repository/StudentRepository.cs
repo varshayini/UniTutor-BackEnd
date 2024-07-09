@@ -130,19 +130,6 @@ namespace UniTutor.Repository
             return _DBcontext.Students.Any(e => e.Id == id);
         }
 
-        public async Task<Student> GetStudentAsync(int id)
-        {
-            return await _DBcontext.Students.FindAsync(id);
-        }
-
-        public async Task AddStudentAsync(Student student)
-        {
-            _DBcontext.Students.Add(student);
-            await _DBcontext.SaveChangesAsync();
-        }
-
-      
-
         public async Task DeleteStudentAsync(int id)
         {
             var student = await _DBcontext.Students.FindAsync(id);
@@ -161,6 +148,23 @@ namespace UniTutor.Repository
         public async Task<Student> GetByIdAsync(int id)
         {
             return await _DBcontext.Students.FindAsync(id);
+        }
+
+        public async Task<StudentDashboardDeatilsDto> GetStudentDashboardDetails(int studentId)
+        {
+            var student = await _DBcontext.Students
+                .Where(s => s.Id == studentId)
+                .Select(s => new StudentDashboardDeatilsDto
+                {
+                    firstName = s.firstName,
+                    lastName = s.lastName,
+                    email = s.email,
+                    phoneNumber = s.phoneNumber,
+                    ProfileUrl = s.ProfileUrl,
+                })
+                .FirstOrDefaultAsync();
+
+            return student;
         }
 
 

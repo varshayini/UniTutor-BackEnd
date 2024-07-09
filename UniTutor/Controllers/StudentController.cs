@@ -148,6 +148,17 @@ namespace UniTutor.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("{studentId}")]
+        public async Task<IActionResult> GetStudentDashboardDetails(int studentId)
+        {
+            var studentDetails = await _student.GetStudentDashboardDetails(studentId);
+            if (studentDetails == null)
+            {
+                return NotFound();
+            }
+            return Ok(studentDetails);
+        }
         //[HttpPost("requesttutor")]
         //public IActionResult requesttutor([FromBody] Request request)
         //{

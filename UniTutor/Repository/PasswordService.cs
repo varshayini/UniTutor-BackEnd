@@ -36,7 +36,7 @@ namespace UniTutor.Repository
                 // Generate verification code
                 var verificationCode = Guid.NewGuid().ToString("N").Substring(0, 6);
                 tutor.VerificationCode = verificationCode;
-                await _tutor.UpdateTutorAsync(tutor);
+                await _tutor.UpdateAsync(tutor);
                 await _emailService.SendVerificationCodeAsync(tutor.universityMail, verificationCode);
             }
             else
@@ -108,7 +108,7 @@ namespace UniTutor.Repository
                 PasswordHash ph = new PasswordHash();
                 tutor.password = ph.HashPassword(newPassword);
                 tutor.VerificationCode = null; // Clear verification code after reset
-                await _tutor.UpdateTutorAsync(tutor);
+                await _tutor.UpdateAsync(tutor);
                 return true;
             }
 
