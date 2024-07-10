@@ -7,7 +7,7 @@ namespace UniTutor.Model
     public class Tutor
     {
         [Key]
-        public int Id { get; set; }
+        public int _id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string password { get; set; }

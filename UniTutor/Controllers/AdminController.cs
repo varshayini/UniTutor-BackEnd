@@ -79,7 +79,7 @@ namespace UniTutor.Controllers
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                 new Claim(ClaimTypes.Name, adminLogin.Email),  // Email claim
-                new Claim(ClaimTypes.NameIdentifier, loggedInAdmin.Id.ToString()),  // Admin ID claim
+                new Claim(ClaimTypes.NameIdentifier, loggedInAdmin._id.ToString()),  // Admin ID claim
                 new Claim(ClaimTypes.GivenName, loggedInAdmin.Name),  // Admin name claim
                 new Claim(ClaimTypes.Role, "Student")
 
@@ -91,7 +91,7 @@ namespace UniTutor.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInAdmin.Id });
+                return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInAdmin._id });
             }
             else
             {
@@ -233,7 +233,7 @@ namespace UniTutor.Controllers
 
             var studentViewMoreDto = new StudentViewMoreDto
             {
-                Id = student.Id,
+                Id = student._id,
                 firstName = student.firstName,
                 lastName = student.lastName,
                 email = student.email,

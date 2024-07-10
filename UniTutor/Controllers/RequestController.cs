@@ -65,29 +65,27 @@ namespace UniTutor.Controllers
 
             var result = requests.Select(r => new 
             {
-                r.subjectRequestId,
-                r.studentId,
-                r.tutorId,
-                r.subjectId,
-                r.studentEmail,
-                r.status,
-                r.timestamp,
-                subject = new
+                r._id,
+                subjectId    = new
                 {
                     r.Subject._id,
                     r.Subject.title,
                     r.Subject.coverImage
                 },
-                student = new
+                studentId = new
                 {
-                    r.Student.Id,
+                    r.Student._id,
                     r.Student.firstName,
                     r.Student.email,
                     r.Student.phoneNumber, 
                     r.Student.district,
                     r.Student.schoolName,
                     r.Student.grade
-                }
+                }, 
+                r.tutorId,
+                r.studentEmail,
+                r.status,
+                r.timestamp,
             }).ToList();
 
             return Ok(result);

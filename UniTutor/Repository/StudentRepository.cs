@@ -127,7 +127,7 @@ namespace UniTutor.Repository
 
         public bool StudentExists(int id)
         {
-            return _DBcontext.Students.Any(e => e.Id == id);
+            return _DBcontext.Students.Any(e => e._id == id);
         }
 
         public async Task DeleteStudentAsync(int id)
@@ -153,7 +153,7 @@ namespace UniTutor.Repository
         public async Task<StudentDashboardDeatilsDto> GetStudentDashboardDetails(int studentId)
         {
             var student = await _DBcontext.Students
-                .Where(s => s.Id == studentId)
+                .Where(s => s._id == studentId)
                 .Select(s => new StudentDashboardDeatilsDto
                 {
                     firstName = s.firstName,

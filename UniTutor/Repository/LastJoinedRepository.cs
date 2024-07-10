@@ -79,7 +79,7 @@ namespace UniTutor.Repository
                 .Take(count)
                 .Select(s => new
                 {
-                    s.Id,
+                    s._id,
                     FullName = s.firstName + " " + s.lastName,
                     s.email,
                     s.ProfileUrl,
@@ -94,7 +94,7 @@ namespace UniTutor.Repository
                 .Take(count)
                 .Select(t => new
                 {
-                    t.Id,
+                    t._id,
                     FullName = t.firstName + " " + t.lastName,
                     email = t.universityMail,  // Change property name to match the one used in students
                     t.ProfileUrl,

@@ -65,7 +65,7 @@ namespace UniTutor.Controllers
                 if (result)
                 {
                     Console.WriteLine("registration success");
-                    return CreatedAtAction(nameof(GetAccountById), new { id = tutor.Id }, tutor);
+                    return CreatedAtAction(nameof(GetAccountById), new { id = tutor._id }, tutor);
                 }
                 else
                 {
@@ -121,7 +121,7 @@ namespace UniTutor.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
             new Claim(ClaimTypes.Name, loggedInTutor.universityMail),  // Email claim
-            new Claim(ClaimTypes.NameIdentifier, loggedInTutor.Id.ToString()),  // ID claim
+            new Claim(ClaimTypes.NameIdentifier, loggedInTutor._id.ToString()),  // ID claim
             new Claim(ClaimTypes.GivenName, loggedInTutor.firstName),  // Name claim
             new Claim(ClaimTypes.Role, "Tutor")
                 }),
@@ -132,7 +132,7 @@ namespace UniTutor.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInTutor.Id });
+            return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInTutor. _id });
         }
 
 
