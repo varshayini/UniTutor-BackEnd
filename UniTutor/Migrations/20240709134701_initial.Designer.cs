@@ -12,7 +12,7 @@ using UniTutor.DataBase;
 namespace UniTutor.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240708150459_initial")]
+    [Migration("20240709134701_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -92,6 +92,12 @@ namespace UniTutor.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("subjectRequestId"));
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRejected")
+                        .HasColumnType("bit");
 
                     b.Property<string>("status")
                         .IsRequired()

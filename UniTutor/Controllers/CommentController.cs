@@ -19,10 +19,10 @@ public class CommentController : ControllerBase
     }
 
     [HttpPost("create/{Id}/{usertype}")]
-    public async Task<IActionResult> CreateStudentComment(int studentId,string usertype, [FromBody] CreateComment createComment)
+    public async Task<IActionResult> CreateStudentComment(int Id,string usertype, [FromBody] CreateComment createComment)
     {
 
-        await _comment.CreateCommentAsync(createComment.commentText, createComment.Date, studentId,usertype);
+        await _comment.CreateCommentAsync(createComment.commentText, createComment.Date, Id,usertype);
 
         return Ok();
     }
