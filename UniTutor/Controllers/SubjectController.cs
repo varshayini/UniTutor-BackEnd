@@ -90,6 +90,7 @@ namespace UniTutor.Controllers
         public async Task<IActionResult> GetAllSubjects()
         {
             var subjects = await _subject.GetAllSubjects();
+
             if (subjects == null || !subjects.Any())
             {
                 return NotFound(new { message = "No subjects found" });
