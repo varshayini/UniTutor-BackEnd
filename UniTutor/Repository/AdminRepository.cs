@@ -97,7 +97,7 @@ namespace UniTutor.Repository
 
         public Admin GetAdminById(int Id)
         {
-            return _DBcontext.Admin.FirstOrDefault(x => x.Id == Id);
+            return _DBcontext.Admin.FirstOrDefault(x => x._id == Id);
         }
         public IEnumerable<Student> GetAllStudent()
         {

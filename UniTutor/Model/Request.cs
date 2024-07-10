@@ -7,7 +7,7 @@ namespace UniTutor.Model
     public class Request
     {
         [Key]
-        public int subjectRequestId { get; set; }
+        public int _id { get; set; }
 
         [Required]
         public int subjectId { get; set; }

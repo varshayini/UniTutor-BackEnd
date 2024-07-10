@@ -6,7 +6,7 @@
 //    public class Review
 //    {
 //        [Key]
-//        public int Id { get; set; }
+//        public int _id { get; set; }
 
 //        [ForeignKey("Student")]
 //        [Required]

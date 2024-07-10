@@ -10,7 +10,8 @@ namespace UniTutor.Model
 
     public class Comment
     {
-        public int Id { get; set; }
+        [Key]
+        public int _id { get; set; }
         public string userType { get; set; }
         public string commentText { get; set; }
         public DateTime Date { get; set; }

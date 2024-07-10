@@ -71,7 +71,7 @@ namespace UniTutor.Controllers
             ";
 
                     await _emailService.SendEmailAsync(student.email, emailSubject, emailMessage);
-                    return CreatedAtAction(nameof(GetAccountById), new { id = student.Id }, student);
+                    return CreatedAtAction(nameof(GetAccountById), new { id = student._id }, student);
                 }
                 else
                 {
@@ -115,7 +115,7 @@ namespace UniTutor.Controllers
                     Subject = new ClaimsIdentity(new Claim[]
                     {
          new Claim(ClaimTypes.Name, email),  // Email claim
-         new Claim(ClaimTypes.NameIdentifier, loggedInStudent.Id.ToString()),  // Student ID claim
+         new Claim(ClaimTypes.NameIdentifier, loggedInStudent._id.ToString()),  // Student ID claim
          new Claim(ClaimTypes.GivenName, loggedInStudent.firstName),  // Student name claim
          new Claim(ClaimTypes.Role, "Student")
                     }),
@@ -126,7 +126,7 @@ namespace UniTutor.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInStudent.Id });
+                return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInStudent._id });
             }
             else
             {

@@ -12,7 +12,7 @@ using UniTutor.DataBase;
 namespace UniTutor.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240709134701_initial")]
+    [Migration("20240710091149_initial")]
     partial class initial
     {
         /// <inheritdoc />
