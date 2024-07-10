@@ -12,23 +12,16 @@ namespace UniTutor.Repository
     {
         private ApplicationDBContext _DBcontext;
         private readonly IConfiguration _config;
-       // private readonly ISmsService _smsService;
-        private readonly string _adminPhoneNumber;
+       
 
 
         public TutorRepository(ApplicationDBContext DBcontext, IConfiguration config)
         {
             _DBcontext = DBcontext;
             _config = config;
-           // _smsService = smsService;
-            //_adminPhoneNumber = config["AdminPhoneNumber"];
         }
 
-        //public async Task CreateTutorRequestAsync(Tutor tutor)
-        //{
-        //    _DBcontext.Tutors.Add(tutor);
-        //    await _DBcontext.SaveChangesAsync();
-        //}
+     
         public bool SignUp(Tutor tutor)
         {
             try

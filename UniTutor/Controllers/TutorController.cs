@@ -9,6 +9,7 @@ using UniTutor.DTO;
 using UniTutor.Interface;
 using UniTutor.Model;
 using UniTutor.Repository;
+using UniTutor.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,30 +22,26 @@ namespace UniTutor.Controllers
         ITutor _tutor;
         private IConfiguration _config;
         private readonly IMapper _mapper;
-        //private readonly ISmsService _smsService;
+        //private readonly TutorService _tutorService;
+
 
         public TutorController(ITutor tutor, IConfiguration config,IMapper mapper)
         {
             _tutor = tutor;
             _config = config;
             _mapper = mapper;
-            //_smsService = smsService;
+            //_tutorService = tutorService;
+
         }
-        //public async Task<IActionResult> CreateRequest([FromBody] Tutor tutor)
+
+        //[HttpPost("request-to-join")]
+        //public async Task<IActionResult> RequestToJoin([FromBody] TutorRequestDto request)
         //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    await _tutor.CreateTutorRequestAsync(tutor);
-
-        //    // Send SMS notification
-        //    string message = $"New tutor request from {tutor.firstName}. Request ID: {tutor.Id}";
-        //    await _smsService.SendSmsAsync(tutor.phoneNumber, message);
-
-        //    return Ok(tutor);
+        //    await _tutorService.RequestToJoinAsync(request.firstName);
+        //    return Ok("Request sent successfully");
         //}
+
+
 
         [HttpPost("create")]
         public IActionResult CreateAccount([FromBody] TutorRegistration tutorDto)
