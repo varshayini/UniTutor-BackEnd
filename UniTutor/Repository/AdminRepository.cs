@@ -14,6 +14,7 @@ namespace UniTutor.Repository
     {
         private ApplicationDBContext _DBcontext;
         private readonly IConfiguration _config;
+
         
         public AdminRepository(ApplicationDBContext DBcontext, IConfiguration config)
         {
@@ -132,6 +133,7 @@ namespace UniTutor.Repository
             if (tutor != null)
             {
                 tutor.Verified = false; // Example: Update tutor status
+                _DBcontext.Tutors.Remove(tutor);
                 await _DBcontext.SaveChangesAsync();
             }
         }
@@ -142,6 +144,11 @@ namespace UniTutor.Repository
         public Student GetStudentById(int id)
         {
             return _DBcontext.Students.Find(id);
+        }
+        //tuter verification
+        public IEnumerable<Tutor> GetTutorVerification()
+        {
+            return _DBcontext.Tutors.Where(t => t.Verified == false).ToList();
         }
     }
 }

@@ -14,6 +14,8 @@ using UniTutor.Services;
 using AutoMapper;
 using UniTutor.Controllers;
 using UniTutor.Respository;
+using UniTutor;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +89,7 @@ builder.Services.AddTransient<IRequest, RequestRepository>();
 builder.Services.AddScoped<IAnalytics, AnalyticsRepository>();
 builder.Services.AddScoped<ICurrentUsersTotal,CurrentUsersTotalRepository>();
 builder.Services.AddScoped<ILastJoined,LastJoinedRepository>();
+//builder.Services.AddScoped<ISmsService,EmailSmsService>();
 
 // Configure Stripe API keys
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
