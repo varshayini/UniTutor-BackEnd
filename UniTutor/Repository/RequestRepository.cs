@@ -27,13 +27,13 @@
 //                _DBcontext.Requests.Add(request);
 //                await _DBcontext.SaveChangesAsync();
 //                return true;
-//            } 
+//            }
 //            catch (Exception ex)
 //            {
 //                Console.WriteLine(ex.ToString());
 //                return false;
 //            }
-//        }   
+//        }
 //        //get all requests
 //        public async Task<List<Request>> GetAllRequests()
 //        {
@@ -52,7 +52,7 @@
 //        //get all requests by student id
 //        public async Task<List<Request>> GetAllRequestsByStudentId(int studentId)
 //        {
-//            return await _DBcontext.Requests.Where(a => a.studentId == studentId && a.status==false).ToListAsync();
+//            return await _DBcontext.Requests.Where(a => a.studentId == studentId && a.status == false).ToListAsync();
 //        }
 //        //get all requests by student id and status==true
 //        public async Task<List<Request>> GetAllAcceptedRequestsByStudentId(int studentId)
@@ -65,12 +65,12 @@
 //        {
 //            return await _DBcontext.Requests.FindAsync(id);
 //        }
-        
+
 //        //accept reject for the students request
 //        public async Task AcceptRequest(int id)
 //        {
 //            // Implement logic to accept a request
-//            var request =await _DBcontext.Requests.FindAsync(id);
+//            var request = await _DBcontext.Requests.FindAsync(id);
 //            if (request != null)
 //            {
 //                request.status = true; // Example: Update request status
@@ -88,7 +88,7 @@
 //                await _DBcontext.SaveChangesAsync();
 //            }
 //        }
-       
+
 
 //    }
 //}

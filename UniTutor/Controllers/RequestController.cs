@@ -12,7 +12,7 @@
 //        private readonly IRequest _request;
 //        private readonly ITutor _tutor;
 //        private readonly IConfiguration _config;
-//        public RequestController(IConfiguration config,IRequest request,ITutor tutor )
+//        public RequestController(IConfiguration config, IRequest request, ITutor tutor)
 //        {
 //            _request = request;
 //            _tutor = tutor;
@@ -27,7 +27,7 @@
 //            request.tutorId = tutorId;
 //            var result = await _request.CreateRequest(request);
 //            if (result)
-//            { 
+//            {
 //                return Ok();
 //            }
 //            else
@@ -68,8 +68,8 @@
 //            var requests = await _request.GetAllAcceptedRequestsByStudentId(studentId);
 //            return Ok(requests);
 //        }
-        
-       
+
+
 
 //        [HttpPost("acceptrequest/{id}")]
 //        public async Task<IActionResult> Acceptequest(int id)
@@ -102,9 +102,9 @@
 
 //            return Ok();
 //        }
-        
-       
-        
+
+
+
 
 //    }
 //}
