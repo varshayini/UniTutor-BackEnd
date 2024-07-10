@@ -163,6 +163,25 @@ namespace UniTutor.Controllers
                 return BadRequest("There is no student");
             }
         }
+        //get verified = false tutor list
+        [HttpGet("TutorVerification")]
+        public async Task<ActionResult<IEnumerable<Tutor>>> GetTutorVerification()
+        {
+            var tutors = _admin.GetTutorVerification();
+            if (tutors != null)
+            {
+                return Ok(tutors);
+            }
+            else
+            {
+                return BadRequest("There is no student");
+            }
+        }
+       
+
+
+
+
         [HttpPost("accepttutor/{id}")]
         public async Task<IActionResult> AcceptTutor(int id)
         {

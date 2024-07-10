@@ -21,12 +21,30 @@ namespace UniTutor.Controllers
         ITutor _tutor;
         private IConfiguration _config;
         private readonly IMapper _mapper;
+        //private readonly ISmsService _smsService;
+
         public TutorController(ITutor tutor, IConfiguration config,IMapper mapper)
         {
             _tutor = tutor;
             _config = config;
             _mapper = mapper;
+            //_smsService = smsService;
         }
+        //public async Task<IActionResult> CreateRequest([FromBody] Tutor tutor)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    await _tutor.CreateTutorRequestAsync(tutor);
+
+        //    // Send SMS notification
+        //    string message = $"New tutor request from {tutor.firstName}. Request ID: {tutor.Id}";
+        //    await _smsService.SendSmsAsync(tutor.phoneNumber, message);
+
+        //    return Ok(tutor);
+        //}
 
         [HttpPost("create")]
         public IActionResult CreateAccount([FromBody] TutorRegistration tutorDto)
