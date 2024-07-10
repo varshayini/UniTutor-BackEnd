@@ -143,7 +143,9 @@ namespace UniTutor.Migrations
                     tutorId = table.Column<int>(type: "int", nullable: false),
                     studentEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsAccepted = table.Column<bool>(type: "bit", nullable: false),
+                    IsRejected = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 using UniTutor.DTO;
 using UniTutor.Interface;
 using UniTutor.Model;
@@ -21,12 +22,7 @@ namespace UniTutor.Controllers
             _config = config;
         }
 
-        // GET: api/SubjectRequests
-        [HttpGet]
-        public ActionResult<string> Get()
-        {
-            return "SubjectRequest Route";
-        }
+       
        // POST: api/SubjectRequests/request
         [HttpPost("request")]
         public async Task<ActionResult<RequestDto>> CreateSubjectRequest([FromBody] RequestDto request)
@@ -62,18 +58,41 @@ namespace UniTutor.Controllers
         }
         //get the detils by id
         [HttpGet("tutor/{id}")]
-       public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByTutorId(int id)
+        public async Task<ActionResult<IEnumerable<Request>>> GetSubjectRequestsByTutorId(int id)
         {
-            try
+            var requests = await _request.GetByTutorId(id);
+
+            var result = requests.Select(r => new 
             {
-                var requests = await _request.GetByTutorId(id);
-                return Ok(requests);
-            }
-            catch (System.Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
+                r.subjectRequestId,
+                r.studentId,
+                r.tutorId,
+                r.subjectId,
+                r.studentEmail,
+                r.status,
+                r.timestamp,
+                subject = new
+                {
+                    r.Subject._id,
+                    r.Subject.title,
+                    r.Subject.coverImage
+                },
+                student = new
+                {
+                    r.Student.Id,
+                    r.Student.firstName,
+                    r.Student.email,
+                    r.Student.phoneNumber, 
+                    r.Student.district,
+                    r.Student.schoolName,
+                    r.Student.grade
+                }
+            }).ToList();
+
+            return Ok(result);
         }
+
+
 
         // DELETE: api/SubjectRequests/request/{id}
         [HttpDelete("request/{id}")]
@@ -97,24 +116,23 @@ namespace UniTutor.Controllers
 
         // PUT: api/SubjectRequests/request/{id}
         [HttpPut("request/{id}")]
-        public async Task<ActionResult<Request>> UpdateSubjectRequestStatus(int id, [FromBody] Request request)
+        public async Task<IActionResult> UpdateRequestStatus(int id, [FromBody] RequestStatues StatusDto)
         {
-            if (request.status == null)
+            if (string.IsNullOrEmpty(StatusDto.status))
             {
                 return BadRequest("Status is required");
             }
 
             try
             {
-                var updatedRequest = await _request.UpdateStatus(id, request.status);
+                var updatedRequest = await _request.UpdateRequestStatus(id, StatusDto.status);
                 if (updatedRequest == null)
                 {
                     return NotFound();
                 }
-
                 return Ok(updatedRequest);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, new { message = ex.Message });
             }
@@ -136,26 +154,42 @@ namespace UniTutor.Controllers
 
         }
 
-        [HttpGet("{studentId}/mysubjects")]
+        [HttpGet("{studentId}/mysubjectscount")]
         public async Task<IActionResult> GetMySubjectsCount(int studentId)
         {
             var count = await _request.GetMySubjectsCount(studentId);
             return Ok(count);
         }
 
-        [HttpGet("{studentId}/acceptedrequests")]
+        [HttpGet("{studentId}/acceptedrequestscount")]
         public async Task<IActionResult> GetAcceptedRequestsCount(int studentId)
         {
             var count = await _request.GetAcceptedRequestsCount(studentId);
             return Ok(count);
         }
 
-        [HttpGet("{studentId}/rejectedrequests")]
+        [HttpGet("{studentId}/rejectedrequestscount")]
         public async Task<IActionResult> GetRejectedRequestsCount(int studentId)
         {
             var count = await _request.GetRejectedRequestsCount(studentId);
             return Ok(count);
 
+        }
+        //get accepted request list bystudentid and statues Accepted
+        [HttpGet("{studentId}/acceptedrequests")]
+        public async Task<IActionResult> GetAcceptedRequests(int studentId)
+        {
+            var requests = await _request.GetByStudentId(studentId);
+            var result = requests.Where(r => r.status == "ACCEPTED").ToList();
+            return Ok(result);
+        }
+        //get request list bystudentid and statues pending
+        [HttpGet("{studentId}/pendingrequests")]
+        public async Task<IActionResult> GetPendingRequests(int studentId)
+        {
+            var requests = await _request.GetByStudentId(studentId);
+            var result = requests.Where(r => r.status == "PENDING").ToList();
+            return Ok(result);
         }
     }
 }
