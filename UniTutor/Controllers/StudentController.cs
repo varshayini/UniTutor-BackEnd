@@ -27,17 +27,19 @@ namespace UniTutor.Controllers
     {
         IStudent _student;
         private readonly IConfiguration _config;
-        private readonly IMapper _mapper;   
+        private readonly IMapper _mapper; 
+        private readonly IEmailService _emailService;   
         
 
-        public StudentController(IStudent student,IConfiguration config,IMapper mapper)
+        public StudentController(IStudent student,IConfiguration config,IMapper mapper,IEmailService emailService)
         {
             _config = config;
             _student = student;
             _mapper = mapper;
+            _emailService = emailService;
         }
         [HttpPost("create")]
-        public IActionResult CreateAccount([FromBody] StudentRegistration studentDto)
+        public async Task<IActionResult> CreateAccountAsync([FromBody] StudentRegistration studentDto)
         {
             if (ModelState.IsValid)
             {
@@ -54,6 +56,21 @@ namespace UniTutor.Controllers
                 if (result)
                 {
                     Console.WriteLine("registration success");
+
+                    // Send welcome email
+                    var emailSubject = "Welcome to UniTutor!";
+                    var emailMessage = $@"
+
+                Dear {student.firstName},
+                <br>Welcome to UniTutor! <br>We are excited to have you join our community.Here at UniTutor, we strive to provide the best educational support to help you achieve your academic goals.
+                <br>If you have any questions or need assistance, feel free to reach out to our support team.
+                <br>
+                <br>   
+                Best regards,<br>
+                The UniTutor Team
+            ";
+
+                    await _emailService.SendEmailAsync(student.email, emailSubject, emailMessage);
                     return CreatedAtAction(nameof(GetAccountById), new { id = student.Id }, student);
                 }
                 else

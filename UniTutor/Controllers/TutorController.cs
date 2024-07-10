@@ -154,11 +154,9 @@ namespace UniTutor.Controllers
             tutor.firstName = updateTutorDto.firstName;
             tutor.lastName = updateTutorDto.lastName;
             tutor.occupation = updateTutorDto.occupation;
-            tutor.phoneNumber = updateTutorDto.phoneNumber;
-            tutor.district = updateTutorDto.district;
             tutor.address = updateTutorDto.address;
-            tutor.qualifications = updateTutorDto.qualifications;
-            tutor.cv = updateTutorDto.cv;
+            tutor.district = updateTutorDto.district;
+            tutor.phoneNumber = updateTutorDto.phoneNumber;
             tutor.ProfileUrl = updateTutorDto.ProfileUrl;
 
             if (!string.IsNullOrEmpty(updateTutorDto.ProfileUrl))

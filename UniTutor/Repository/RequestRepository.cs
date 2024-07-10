@@ -55,9 +55,7 @@ namespace UniTutor.Repository
                 subjectId = request.subjectId,
                 tutorId = request.tutorId,
                 studentEmail = request.studentEmail,
-
                 // status = request.status ?? "PENDING",
-
                 timestamp = DateTime.UtcNow
             };
 
@@ -74,7 +72,7 @@ namespace UniTutor.Repository
             }
         }
 
-        public async Task<Request> UpdateStatus(int id, string status)
+        public async Task<Request> UpdateRequestStatus(int id, string status)
         {
             var request = await _DBcontext.Requests.FindAsync(id);
             if (request == null)
@@ -83,8 +81,8 @@ namespace UniTutor.Repository
             }
 
             request.status = status;
-            _DBcontext.Entry(request).State = EntityState.Modified;
             await _DBcontext.SaveChangesAsync();
+
             return request;
         }
 
@@ -110,14 +108,14 @@ namespace UniTutor.Repository
         public async Task<int> GetAcceptedRequestsCount(int studentId)
         {
             return await _DBcontext.Requests
-                                 .Where(sr => sr.studentId == studentId && sr.IsAccepted)
+                                 .Where(sr => sr.studentId == studentId && sr.status == "ACCEPTED")
                                  .CountAsync();
         }
 
         public async Task<int> GetRejectedRequestsCount(int studentId)
         {
             return await _DBcontext.Requests
-                                 .Where(sr => sr.studentId == studentId && sr.IsRejected)
+                                 .Where(sr => sr.studentId == studentId && sr.status ==  "REJECTED")
                                  .CountAsync();
         }
 
