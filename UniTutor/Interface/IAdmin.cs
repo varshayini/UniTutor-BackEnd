@@ -20,6 +20,7 @@ namespace UniTutor.Interface
 
         public IEnumerable<Student> GetAllStudent();
         public IEnumerable<Tutor> GetAllTutor();
+        public IEnumerable<Tutor> GetTutorVerification();
         Tutor  GetTutorById(int id);
         public  Task AcceptTutor(int id);
         public Task RejectTutor(int id);

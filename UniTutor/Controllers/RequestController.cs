@@ -14,6 +14,7 @@ namespace UniTutor.Controllers
         private readonly IRequest _request;
         private readonly ITutor _tutor;
         private readonly IConfiguration _config;
+
         public RequestController(IConfiguration config, IRequest request, ITutor tutor)
         {
             _request = request;
