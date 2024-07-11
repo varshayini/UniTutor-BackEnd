@@ -233,7 +233,7 @@ namespace UniTutor.Controllers
 
             var studentViewMoreDto = new StudentViewMoreDto
             {
-                Id = student._id,
+                _id = student._id,
                 firstName = student.firstName,
                 lastName = student.lastName,
                 email = student.email,
@@ -244,6 +244,8 @@ namespace UniTutor.Controllers
                 phoneNumber = student.phoneNumber,
                 numberofcomplain = student.numberofcomplain,
                 ProfileUrl = student.ProfileUrl,
+                CreatedAt = student.CreatedAt
+
               
             };
 
@@ -261,7 +263,7 @@ namespace UniTutor.Controllers
 
             var tutorViewMoreDto = new TutorViewMoreDto
             {
-
+                _id = tutor._id,
                 firstName = tutor.firstName,
                 lastName = tutor.lastName,
                 occupation = tutor.occupation,
@@ -272,6 +274,10 @@ namespace UniTutor.Controllers
                 qualifications = tutor.qualifications,
                 cv = tutor.cv,
                 universityID = tutor.universityID,
+                ProfileUrl = tutor.ProfileUrl,
+                CreatedAt = tutor.CreatedAt,
+                Verified = tutor.Verified
+
             };
 
             return Ok(tutorViewMoreDto);

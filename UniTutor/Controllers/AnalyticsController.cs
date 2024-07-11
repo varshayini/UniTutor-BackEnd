@@ -20,6 +20,7 @@ namespace UniTutor.Controllers
         public async Task<IActionResult> GetWeeklyJoinedTutors()
         {
             var data = await _analyticsRepository.GetWeeklyJoinedTutorsAsync();
+           // var verifiedTutors = data.Where(tutor => tutor.Verified==true);
             return Ok(data);
         }
 
