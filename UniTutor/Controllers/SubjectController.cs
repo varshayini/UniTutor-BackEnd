@@ -97,6 +97,19 @@ namespace UniTutor.Controllers
             }
             return Ok(subjects);
         }
+        //[HttpGet("getall")]
+        //public async Task<IActionResult> GetAllSubjects()
+        //{
+        //    try
+        //    {
+        //        var subjectsWithRatings = await _subject.GetAllSubjects();
+        //        return Ok(subjectsWithRatings);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.Message);
+        //    }
+        //}
 
 
 

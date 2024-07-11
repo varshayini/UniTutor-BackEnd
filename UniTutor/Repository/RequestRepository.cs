@@ -118,7 +118,15 @@ namespace UniTutor.Repository
                                  .Where(sr => sr.studentId == studentId && sr.status ==  "REJECTED")
                                  .CountAsync();
         }
-
+       //get all requests by tutor id
+        public async Task<IEnumerable<Request>> GetAcceptedRequestsByTutorId(int tutorId)
+        {
+            return await _DBcontext.Requests
+                .Where(sr => sr.tutorId == tutorId && sr.status == "ACCEPTED")
+                .Include(sr => sr.Subject)
+                .Include(sr => sr.Student)
+                .ToListAsync();
+        }
 
 
     }
