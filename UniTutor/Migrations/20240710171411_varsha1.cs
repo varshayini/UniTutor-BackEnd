@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniTutor.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class varsha1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace UniTutor.Migrations
                 name: "Admin",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    _id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -23,14 +23,14 @@ namespace UniTutor.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admin", x => x.Id);
+                    table.PrimaryKey("PK_Admin", x => x._id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    _id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -48,14 +48,14 @@ namespace UniTutor.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.PrimaryKey("PK_Students", x => x._id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Tutors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    _id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -75,14 +75,14 @@ namespace UniTutor.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tutors", x => x.Id);
+                    table.PrimaryKey("PK_Tutors", x => x._id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    _id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     userType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     commentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -92,19 +92,61 @@ namespace UniTutor.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_Comments", x => x._id);
                     table.ForeignKey(
                         name: "FK_Comments_Students_stuId",
                         column: x => x.stuId,
                         principalTable: "Students",
-                        principalColumn: "Id",
+                        principalColumn: "_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Tutors_tutId",
                         column: x => x.tutId,
                         principalTable: "Tutors",
-                        principalColumn: "Id",
+                        principalColumn: "_id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    _id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    senderMail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    receiverMail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    discription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    tutorId = table.Column<int>(type: "int", nullable: true),
+                    studentId = table.Column<int>(type: "int", nullable: true),
+                    Student_id = table.Column<int>(type: "int", nullable: true),
+                    Tutor_id = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x._id);
+                    table.ForeignKey(
+                        name: "FK_Reports_Students_Student_id",
+                        column: x => x.Student_id,
+                        principalTable: "Students",
+                        principalColumn: "_id");
+                    table.ForeignKey(
+                        name: "FK_Reports_Students_studentId",
+                        column: x => x.studentId,
+                        principalTable: "Students",
+                        principalColumn: "_id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reports_Tutors_Tutor_id",
+                        column: x => x.Tutor_id,
+                        principalTable: "Tutors",
+                        principalColumn: "_id");
+                    table.ForeignKey(
+                        name: "FK_Reports_Tutors_tutorId",
+                        column: x => x.tutorId,
+                        principalTable: "Tutors",
+                        principalColumn: "_id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -128,7 +170,7 @@ namespace UniTutor.Migrations
                         name: "FK_Subjects_Tutors_tutorId",
                         column: x => x.tutorId,
                         principalTable: "Tutors",
-                        principalColumn: "Id",
+                        principalColumn: "_id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -136,7 +178,7 @@ namespace UniTutor.Migrations
                 name: "Requests",
                 columns: table => new
                 {
-                    subjectRequestId = table.Column<int>(type: "int", nullable: false)
+                    _id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     subjectId = table.Column<int>(type: "int", nullable: false),
                     studentId = table.Column<int>(type: "int", nullable: false),
@@ -149,12 +191,12 @@ namespace UniTutor.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Requests", x => x.subjectRequestId);
+                    table.PrimaryKey("PK_Requests", x => x._id);
                     table.ForeignKey(
                         name: "FK_Requests_Students_studentId",
                         column: x => x.studentId,
                         principalTable: "Students",
-                        principalColumn: "Id",
+                        principalColumn: "_id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Requests_Subjects_subjectId",
@@ -166,7 +208,7 @@ namespace UniTutor.Migrations
                         name: "FK_Requests_Tutors_tutorId",
                         column: x => x.tutorId,
                         principalTable: "Tutors",
-                        principalColumn: "Id",
+                        principalColumn: "_id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -179,6 +221,26 @@ namespace UniTutor.Migrations
                 name: "IX_Comments_tutId",
                 table: "Comments",
                 column: "tutId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_Student_id",
+                table: "Reports",
+                column: "Student_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_studentId",
+                table: "Reports",
+                column: "studentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_Tutor_id",
+                table: "Reports",
+                column: "Tutor_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_tutorId",
+                table: "Reports",
+                column: "tutorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Requests_studentId",
@@ -209,6 +271,9 @@ namespace UniTutor.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Reports");
 
             migrationBuilder.DropTable(
                 name: "Requests");

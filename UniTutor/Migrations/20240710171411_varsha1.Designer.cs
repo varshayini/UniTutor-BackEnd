@@ -12,8 +12,8 @@ using UniTutor.DataBase;
 namespace UniTutor.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240710091149_initial")]
-    partial class initial
+    [Migration("20240710171411_varsha1")]
+    partial class varsha1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace UniTutor.Migrations
 
             modelBuilder.Entity("UniTutor.Model.Admin", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -46,18 +46,18 @@ namespace UniTutor.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("_id");
 
                     b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("UniTutor.Model.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -76,7 +76,7 @@ namespace UniTutor.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("_id");
 
                     b.HasIndex("stuId");
 
@@ -85,13 +85,61 @@ namespace UniTutor.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("UniTutor.Model.Request", b =>
+            modelBuilder.Entity("UniTutor.Model.Report", b =>
                 {
-                    b.Property<int>("subjectRequestId")
+                    b.Property<int>("_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("subjectRequestId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
+
+                    b.Property<int?>("Student_id")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Tutor_id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("discription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("receiverMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("senderMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("studentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("tutorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("_id");
+
+                    b.HasIndex("Student_id");
+
+                    b.HasIndex("Tutor_id");
+
+                    b.HasIndex("studentId");
+
+                    b.HasIndex("tutorId");
+
+                    b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("UniTutor.Model.Request", b =>
+                {
+                    b.Property<int>("_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
@@ -120,7 +168,7 @@ namespace UniTutor.Migrations
                     b.Property<int>("tutorId")
                         .HasColumnType("int");
 
-                    b.HasKey("subjectRequestId");
+                    b.HasKey("_id");
 
                     b.HasIndex("studentId");
 
@@ -133,11 +181,11 @@ namespace UniTutor.Migrations
 
             modelBuilder.Entity("UniTutor.Model.Student", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -188,7 +236,7 @@ namespace UniTutor.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("_id");
 
                     b.ToTable("Students");
                 });
@@ -237,11 +285,11 @@ namespace UniTutor.Migrations
 
             modelBuilder.Entity("UniTutor.Model.Tutor", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -300,7 +348,7 @@ namespace UniTutor.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id");
+                    b.HasKey("_id");
 
                     b.ToTable("Tutors");
                 });
@@ -316,6 +364,31 @@ namespace UniTutor.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("tutId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tutor");
+                });
+
+            modelBuilder.Entity("UniTutor.Model.Report", b =>
+                {
+                    b.HasOne("UniTutor.Model.Student", null)
+                        .WithMany("Reports")
+                        .HasForeignKey("Student_id");
+
+                    b.HasOne("UniTutor.Model.Tutor", null)
+                        .WithMany("Reports")
+                        .HasForeignKey("Tutor_id");
+
+                    b.HasOne("UniTutor.Model.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("studentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UniTutor.Model.Tutor", "Tutor")
+                        .WithMany()
+                        .HasForeignKey("tutorId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Student");
 
@@ -364,6 +437,8 @@ namespace UniTutor.Migrations
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("Reports");
+
                     b.Navigation("Requests");
                 });
 
@@ -375,6 +450,8 @@ namespace UniTutor.Migrations
             modelBuilder.Entity("UniTutor.Model.Tutor", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Reports");
 
                     b.Navigation("Requests");
 

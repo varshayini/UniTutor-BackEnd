@@ -31,7 +31,7 @@ namespace UniTutor.Model
         [Required]
         public DateTime timestamp { get; set; }
 
-       // [JsonIgnore]
+      
         public virtual Student Student { get; set; }
         public virtual Subject Subject { get; set; }
         public virtual Tutor Tutor { get; set; }

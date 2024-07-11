@@ -96,6 +96,31 @@ namespace UniTutor.Repository
             return await _DBcontext.Subjects.ToListAsync();
         }
 
+        //public async Task<List<Subject>> GetAllSubjects()
+        //{
+        //    var subjectsWithRatings = await _DBcontext.Subjects
+        //        .Include(s => s.Tutor)
+        //        .Select(s => new Subject
+        //        {
+        //            title = s.title,
+        //            description = s.description,
+        //            coverImage = s.coverImage,
+        //            medium = s.medium,
+        //            mode = s.mode,
+        //            availability = s.availability,
+        //            tutorName = s.Tutor.firstName, // Map Tutor's firstName to tutorName
+        //            tutorId = s.Tutor._id,
+        //            AverageRating = _DBcontext.Reviews
+        //                .Where(r => r.subjectId == s._id)
+        //                .Select(r => r.rating)
+        //                .DefaultIfEmpty(0)
+        //                .Average()
+        //        })
+        //        .ToListAsync();
+
+        //    return subjectsWithRatings;
+        //}
+
 
     }
 }
