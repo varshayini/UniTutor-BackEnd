@@ -2,7 +2,7 @@
 {
     public class UpdateTutorDto
     {
-        public int Id { get; set; }
+        public int _id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string occupation { get; set; }
