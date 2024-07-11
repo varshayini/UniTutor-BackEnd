@@ -38,6 +38,7 @@ public class CommentController : ControllerBase
                 c.commentText, 
                 c.Date,
                 c.userType,
+               // c.ProfileUrl,
 
                 fullName = c.userType == "Student" ?
                            $"{c.Student.firstName} {c.Student.lastName}" :
