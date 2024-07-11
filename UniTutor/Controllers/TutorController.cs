@@ -139,7 +139,7 @@ namespace UniTutor.Controllers
         [HttpPut("ProfileUpdate/{id}")]
         public async Task<IActionResult> UpdateTutor(int id, [FromBody] UpdateTutorDto updateTutorDto)
         {
-            if (id != updateTutorDto.Id)
+            if (id != updateTutorDto._id)
             {
                 return BadRequest();
             }
