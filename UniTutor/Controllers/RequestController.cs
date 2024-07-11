@@ -122,10 +122,69 @@ namespace UniTutor.Controllers
 
             return Ok(result);
         }
-        
+        //get accepted request list by student list 
+        [HttpGet("student/{id}/accepted")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetAcceptedRequestsByStudentId(int id)
+        {
+            var requests = await _request.GetAcceptedRequestsByStudentId(id);
+            var result = requests.Select(r => new
+            {
+                r._id,
+                subjectId = new
+                {
+                    r.Subject._id,
+                    r.Subject.title,
+                    r.Subject.description
+                },
+                TutorId = new
+                {
+                    r.Tutor._id,
+                    r.Tutor.firstName,
+                    r.Tutor.lastName,
+                    r.Tutor.district,
+                    r.Tutor.universityMail,
+                    r.Tutor.phoneNumber
+                    
+                }
+            }).ToList();
+
+            return Ok(result);
+        }
+        //get all request  pending and rejected by student id
+        [HttpGet("student/{id}/reject/pending")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetAllRequestsByStudentId(int id)
+        {
+            var requests = await _request.GetAllRequestsByStudentId(id);
+            var result = requests.Select(r => new
+            {
+                r._id,
+                subjectId = new
+                {
+                    r.Subject._id,
+                    r.Subject.title,
+                    r.Subject.coverImage
+                },
+                tutorId = new
+                {
+                    r.Tutor._id,
+                    r.Tutor.firstName,
+                    r.Tutor.lastName,
+                    r.Tutor.ProfileUrl,
+
+                },
+                r.status,
+                r.timestamp,
+            }).ToList();
+
+            return Ok(result);
+        }
 
 
-          
+
+
+
+
+
 
 
         // DELETE: api/SubjectRequests/request/{id}
@@ -187,6 +246,11 @@ namespace UniTutor.Controllers
 
 
         }
+        //get requested list by student id
+        [HttpGet]
+
+
+        
 
         [HttpGet("{studentId}/mysubjectscount")]
         public async Task<IActionResult> GetMySubjectsCount(int studentId)
@@ -209,21 +273,6 @@ namespace UniTutor.Controllers
             return Ok(count);
 
         }
-        //get accepted request list bystudentid and statues Accepted
-        [HttpGet("{studentId}/acceptedrequests")]
-        public async Task<IActionResult> GetAcceptedRequests(int studentId)
-        {
-            var requests = await _request.GetByStudentId(studentId);
-            var result = requests.Where(r => r.status == "ACCEPTED").ToList();
-            return Ok(result);
-        }
-        //get request list bystudentid and statues pending
-        [HttpGet("{studentId}/pendingrequests")]
-        public async Task<IActionResult> GetPendingRequests(int studentId)
-        {
-            var requests = await _request.GetByStudentId(studentId);
-            var result = requests.Where(r => r.status == "PENDING").ToList();
-            return Ok(result);
-        }
+       
     }
 }

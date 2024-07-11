@@ -25,10 +25,11 @@ namespace UniTutor.Controllers
         }
 
         // GET: api/Todos/{studentId}
-        [HttpGet("{studentId}")]
+        [HttpGet("student/{studentId}")]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodosByStudentId(int studentId)
         {
             var todos = await _todoItem.GetByStudentIdAsync(studentId);
+            
             return Ok(todos);
         }
 

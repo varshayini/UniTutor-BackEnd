@@ -1,4 +1,4 @@
-﻿namespace UniTutor.Model
+﻿namespace UniTutor.DTO
 {
     public class TodoListDto
     {

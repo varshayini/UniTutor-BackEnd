@@ -5,7 +5,7 @@
 namespace UniTutor.Migrations
 {
     /// <inheritdoc />
-    public partial class @new : Migration
+    public partial class menusha7 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
