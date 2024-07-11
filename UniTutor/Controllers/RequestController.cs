@@ -90,7 +90,42 @@ namespace UniTutor.Controllers
 
             return Ok(result);
         }
+        //get the list of acceped request by tutor id in repositorymethode
+        [HttpGet("tutor/{id}/accepted")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetAcceptedRequestsByTutorId(int id)
+        {
+            var requests = await _request.GetAcceptedRequestsByTutorId(id);
+            var result = requests.Select(r => new
+            {
+                r._id,
+                subjectId = new
+                {
+                    r.Subject._id,
+                    r.Subject.title,
+                    r.Subject.coverImage
+                },
+                studentId = new
+                {
+                    r.Student._id,
+                    r.Student.firstName,
+                    r.Student.email,
+                    r.Student.phoneNumber,
+                    r.Student.district,
+                    r.Student.schoolName,
+                    r.Student.grade
+                },
+                r.tutorId,
+                r.studentEmail,
+                r.status,
+                r.timestamp,
+            }).ToList();
 
+            return Ok(result);
+        }
+        
+
+
+          
 
 
         // DELETE: api/SubjectRequests/request/{id}

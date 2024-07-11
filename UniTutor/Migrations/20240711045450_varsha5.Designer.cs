@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniTutor.DataBase;
 
@@ -11,9 +12,11 @@ using UniTutor.DataBase;
 namespace UniTutor.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240711045450_varsha5")]
+    partial class varsha5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,39 +179,6 @@ namespace UniTutor.Migrations
                     b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("UniTutor.Model.Review", b =>
-                {
-                    b.Property<int>("_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
-
-                    b.Property<string>("feedback")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("rating")
-                        .HasColumnType("int");
-
-                    b.Property<int>("studentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("subjectId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("_id");
-
-                    b.HasIndex("studentId");
-
-                    b.HasIndex("subjectId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("UniTutor.Model.Student", b =>
                 {
                     b.Property<int>("_id")
@@ -325,6 +295,7 @@ namespace UniTutor.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("studentId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("text")
@@ -332,6 +303,7 @@ namespace UniTutor.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("tutorId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("_id");
@@ -482,25 +454,6 @@ namespace UniTutor.Migrations
                     b.Navigation("Tutor");
                 });
 
-            modelBuilder.Entity("UniTutor.Model.Review", b =>
-                {
-                    b.HasOne("UniTutor.Model.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("studentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniTutor.Model.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("subjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
-
-                    b.Navigation("Subject");
-                });
-
             modelBuilder.Entity("UniTutor.Model.Subject", b =>
                 {
                     b.HasOne("UniTutor.Model.Tutor", "Tutor")
@@ -516,11 +469,15 @@ namespace UniTutor.Migrations
                 {
                     b.HasOne("UniTutor.Model.Student", "Student")
                         .WithMany("TodoLists")
-                        .HasForeignKey("studentId");
+                        .HasForeignKey("studentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("UniTutor.Model.Tutor", "Tutor")
                         .WithMany("TodoLists")
-                        .HasForeignKey("tutorId");
+                        .HasForeignKey("tutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Student");
 

@@ -89,7 +89,10 @@ builder.Services.AddTransient<IRequest, RequestRepository>();
 builder.Services.AddScoped<IAnalytics, AnalyticsRepository>();
 builder.Services.AddScoped<ICurrentUsersTotal,CurrentUsersTotalRepository>();
 builder.Services.AddScoped<ILastJoined,LastJoinedRepository>();
-//builder.Services.AddScoped<ISmsService,EmailSmsService>();
+builder.Services.AddScoped<IReport, ReportRepository>();
+builder.Services.AddScoped<ITodoItem, TodoItemRepository>();
+builder.Services.AddScoped<IReview, ReviewRepository>();
+//builder.Services.AddScoped< TutorService>();
 
 // Configure Stripe API keys
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
