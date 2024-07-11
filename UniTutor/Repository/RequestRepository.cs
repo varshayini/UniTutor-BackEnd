@@ -125,6 +125,27 @@ namespace UniTutor.Repository
                 .Where(sr => sr.tutorId == tutorId && sr.status == "ACCEPTED")
                 .Include(sr => sr.Subject)
                 .Include(sr => sr.Student)
+                .Include(sr => sr.Tutor)
+                .ToListAsync();
+        }
+        //get all requests by student id
+        public async Task<IEnumerable<Request>> GetAcceptedRequestsByStudentId(int studentId)
+        {
+            return await _DBcontext.Requests
+                .Where(sr => sr.studentId == studentId && sr.status == "ACCEPTED")
+                .Include(sr => sr.Subject)
+                .Include(sr => sr.Student)
+                .Include(sr => sr.Tutor)
+                .ToListAsync();
+        }
+        //get all request by student id where statues pending and rejected
+        public async Task<IEnumerable<Request>> GetAllRequestsByStudentId(int studentId)
+        {
+            return await _DBcontext.Requests
+                .Where(sr => sr.studentId == studentId && (sr.status == "PENDING" || sr.status == "REJECTED"))
+                .Include(sr => sr.Subject)
+                .Include(sr => sr.Student)
+                .Include(sr => sr.Tutor)
                 .ToListAsync();
         }
 

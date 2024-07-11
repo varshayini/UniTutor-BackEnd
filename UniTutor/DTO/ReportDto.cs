@@ -7,6 +7,6 @@ namespace UniTutor.DTO
        
 
         public string description { get; set; }
-        public DateTime date { get; set; }
+        public DateTime? date { get; set; }
     }
 }

@@ -19,6 +19,8 @@ namespace UniTutor.Interface
         public  Task<Request> UpdateRequestStatus(int id, string status);
         //get all requests by tutor id
         Task<IEnumerable<Request>> GetAcceptedRequestsByTutorId(int tutorId);
+        public Task<IEnumerable<Request>> GetAcceptedRequestsByStudentId(int studentId);
+        public  Task<IEnumerable<Request>> GetAllRequestsByStudentId(int studentId);
     }
 }
 
