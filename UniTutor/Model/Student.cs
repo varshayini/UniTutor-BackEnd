@@ -28,7 +28,7 @@ namespace UniTutor.Model
 
         public string? ProfileUrl { get; set; }
         public DateTime CreatedAt { get; set;}
-        public int?  numberofcomplain {  get; set; }
+        public int?  numberofcomplain {  get; set; } 
 
 
         //navigation Property
