@@ -29,20 +29,25 @@ namespace UniTutor.Model
         public string? VerificationCode { get; set; }
 
         public ICollection<Subject> Subjects { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
 
 
         public virtual ICollection<Request> Requests { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
-       public virtual ICollection<TodoItem> TodoLists { get; set; }
+        // public virtual ICollection<TodoItem> TodoLists { get; set; }
+
+        public ICollection<TodoItem> TodoItems { get; set; }
 
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
-       
 
-       
-  
+        public int Coins { get; set; }
 
 
-       
+
+
+
+
+
 
 
     }

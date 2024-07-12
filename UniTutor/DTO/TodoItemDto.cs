@@ -4,9 +4,10 @@ using UniTutor.Model;
 
 namespace UniTutor.DTO
 {
-    public class TodoDto
+    public class TodoItemDto
     {
-     public string text { get; set; }
-   
+        public string text { get; set; }
+
+
     }
 }
