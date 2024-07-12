@@ -6,11 +6,11 @@ using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace UniTutor.Repository
 {
-    public class TodoItemRepository:ITodoItem
+    public class TodoItemRepository : ITodoItem
     {
         private ApplicationDBContext _DBcontext;
         private readonly IConfiguration _config;
-        public TodoItemRepository(ApplicationDBContext DBcontext,IConfiguration config)
+        public TodoItemRepository(ApplicationDBContext DBcontext, IConfiguration config)
         {
             _DBcontext = DBcontext;
             _config = config;

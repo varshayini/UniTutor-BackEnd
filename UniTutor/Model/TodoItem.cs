@@ -11,14 +11,16 @@ namespace UniTutor.Model
         public bool isCompleted { get; set; } = false;
 
         [ForeignKey("Student")]
- 
+
         public int? studentId { get; set; }
 
         [ForeignKey("Tutor")]
-        
+
         public int? tutorId { get; set; }
         public virtual Student Student { get; set; }
         public virtual Tutor Tutor { get; set; }
+
+
 
     }
 }

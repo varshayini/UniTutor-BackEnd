@@ -41,7 +41,7 @@ namespace UniTutor.Controllers
         }
 
         [HttpPost("{usertype}/{id}")]
-        public async Task<ActionResult<TodoItem>> PostTodo(string usertype, int id, TodoDto todoItemDto)
+        public async Task<ActionResult<TodoItem>> PostTodo(string usertype, int id, TodoItemDto todoItemDto)
         {
             if (!ModelState.IsValid)
             {

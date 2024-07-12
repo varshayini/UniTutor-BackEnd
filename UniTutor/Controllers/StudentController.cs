@@ -28,8 +28,9 @@ namespace UniTutor.Controllers
         IStudent _student;
         private readonly IConfiguration _config;
         private readonly IMapper _mapper; 
-        private readonly IEmailService _emailService;   
-        
+        private readonly IEmailService _emailService;
+       
+
 
         public StudentController(IStudent student,IConfiguration config,IMapper mapper,IEmailService emailService)
         {
@@ -37,6 +38,7 @@ namespace UniTutor.Controllers
             _student = student;
             _mapper = mapper;
             _emailService = emailService;
+            
         }
         [HttpPost("create")]
         public async Task<IActionResult> CreateAccountAsync([FromBody] StudentRegistration studentDto)
@@ -67,8 +69,7 @@ namespace UniTutor.Controllers
                 <br>
                 <br>   
                 Best regards,<br>
-                The UniTutor Team
-            ";
+                The UniTutor Team";
 
                     await _emailService.SendEmailAsync(student.email, emailSubject, emailMessage);
                     return CreatedAtAction(nameof(GetAccountById), new { id = student._id }, student);
