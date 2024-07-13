@@ -28,6 +28,8 @@ namespace UniTutor.Interface
 
         Task<StudentDashboardDeatilsDto> GetStudentDashboardDetails(int studentId);
 
+        
+
 
     }
 }

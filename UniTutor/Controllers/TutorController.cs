@@ -30,10 +30,11 @@ namespace UniTutor.Controllers
             _tutor = tutor;
             _config = config;
             _mapper = mapper;
+           
             //_tutorService = tutorService;
 
         }
-
+   
         //[HttpPost("request-to-join")]
         //public async Task<IActionResult> RequestToJoin([FromBody] TutorRequestDto request)
         //{

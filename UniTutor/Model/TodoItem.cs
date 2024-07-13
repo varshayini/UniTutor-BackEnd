@@ -10,6 +10,7 @@ namespace UniTutor.Model
         public virtual Student Student { get; set; }
 
         [ForeignKey("Student")]
+
         public int? studentId { get; set; }
        
         public string text { get; set; }
@@ -17,9 +18,10 @@ namespace UniTutor.Model
         public virtual Tutor Tutor { get; set; }
 
         [ForeignKey("Tutor")]
-        public int? tutorId { get; set; }
 
+        public int? tutorId { get; set; }
         [Key]
         public int _id { get; set; }
+
     }
 }
