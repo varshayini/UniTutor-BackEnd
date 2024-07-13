@@ -65,12 +65,36 @@ namespace UniTutor.Controllers
 
         // GET: api/review/subject/subjectId
         [HttpGet("subjectreview/{subjectId}")]
-        public async Task<ActionResult<List<Review>>> GetReviewsBySubjectId(int subjectId)
+        public async Task<ActionResult<ReviewResponse>> GetReviewsBySubjectId(int subjectId)
         {
             try
             {
                 var reviews = await _review.GetReviewsBySubjectIdAsync(subjectId);
-                return Ok(reviews);
+
+                // Map the retrieved reviews to FeedbackI objects
+                var feedbackList = reviews.Select(r => new FeedbackI
+                {
+                    _id = r._id.ToString(), // Assuming r.Id is of type int or Guid, convert to string
+                    studentId = r.studentId.ToString(), // Assuming StudentId is of type int or Guid, convert to string
+                    subjectId = r.subjectId.ToString(), // Assuming SubjectId is of type int or Guid, convert to string
+                    rating = r.rating,
+                    feedback = r.feedback,
+                    timestamp = r.timestamp.ToString("yyyy-MM-dd HH:mm"), // Format timestamp as needed
+                   // ProfileUrl = r.Student.ProfileUrl,
+                    //studentName = r.Student.firstName
+                }).ToList();
+
+                // Calculate average rating
+                var averageRating = feedbackList.Any() ? feedbackList.Average(f => f.rating) : 0;
+
+                // Create the response object
+                var response = new ReviewResponse
+                {
+                    reviews = feedbackList,
+                    averageRating = averageRating
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -84,12 +108,16 @@ namespace UniTutor.Controllers
         {
             try
             {
+                // Convert current UTC time to SLST
+                var slstTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Colombo");
+                var slstTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, slstTimeZone);
                 var review = new Review
                 {
                     subjectId = subjectid,
                     studentId = studentid,
                     rating = reviewDto.rating,
-                    feedback = reviewDto.feedback
+                    feedback = reviewDto.feedback,
+                    timestamp = slstTime
                 };
 
                 await _review.AddReviewAsync(review);
@@ -101,6 +129,8 @@ namespace UniTutor.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+       
+        
 
         // DELETE: api/review/id
         [HttpDelete("{id}")]

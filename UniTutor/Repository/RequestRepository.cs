@@ -41,7 +41,7 @@ namespace UniTutor.Repository
         {
             return await _DBcontext.Requests
 
-                .Where(sr => sr.tutorId == tutorId) // Adjust according to your entity's property
+                .Where(sr => sr.tutorId == tutorId &&(sr.status == "PENDING" || sr.status == "REJECTED")) // Adjust according to your entity's property
                 .Include(sr => sr.Subject)
                 .Include(sr => sr.Student)
                 .ToListAsync();
@@ -143,6 +143,24 @@ namespace UniTutor.Repository
         {
             return await _DBcontext.Requests
                 .Where(sr => sr.studentId == studentId && (sr.status == "PENDING" || sr.status == "REJECTED"))
+                .Include(sr => sr.Subject)
+                .Include(sr => sr.Student)
+                .Include(sr => sr.Tutor)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Request>> GetMyStudentCount(int tutorId)
+        {
+            return await _DBcontext.Requests
+                .Where(sr => sr.tutorId == tutorId && sr.status =="ACCEPTED")
+                .Include(sr => sr.Subject)
+                .Include(sr => sr.Student)
+                .Include(sr => sr.Tutor)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Request>> GetAllRequestscount(int tutorId)
+        {
+            return await _DBcontext.Requests
+                .Where(sr => sr.tutorId == tutorId && sr.status == "PENDING" )
                 .Include(sr => sr.Subject)
                 .Include(sr => sr.Student)
                 .Include(sr => sr.Tutor)

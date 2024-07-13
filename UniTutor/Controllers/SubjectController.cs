@@ -85,31 +85,31 @@ namespace UniTutor.Controllers
 
             return Ok(subject);
         }
-        //get all the subject
-        [HttpGet("getall")]
-        public async Task<IActionResult> GetAllSubjects()
-        {
-            var subjects = await _subject.GetAllSubjects();
-
-            if (subjects == null || !subjects.Any())
-            {
-                return NotFound(new { message = "No subjects found" });
-            }
-            return Ok(subjects);
-        }
+        ////get all the subject
         //[HttpGet("getall")]
         //public async Task<IActionResult> GetAllSubjects()
         //{
-        //    try
+        //    var subjects = await _subject.GetAllSubjects();
+
+        //    if (subjects == null || !subjects.Any())
         //    {
-        //        var subjectsWithRatings = await _subject.GetAllSubjects();
-        //        return Ok(subjectsWithRatings);
+        //        return NotFound(new { message = "No subjects found" });
         //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, ex.Message);
-        //    }
+        //    return Ok(subjects);
         //}
+        [HttpGet("getall")]
+        public async Task<IActionResult> GetAllSubjects()
+        {
+            try
+            {
+                var subjectsWithRatings = await _subject.GetAllSubjects();
+                return Ok(subjectsWithRatings);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
 
 

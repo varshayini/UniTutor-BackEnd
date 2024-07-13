@@ -14,7 +14,7 @@ namespace UniTutor.Interface
         public Task<bool> CreateSubject(int tutorId, SubjectRequestDto request);
         public Task<Subject> DeleteSubject(int id);
 
-        public Task<List<Subject>> GetAllSubjects();
+        public  Task<List<AllSubject>> GetAllSubjects();
         public Task<Subject> UpdateSubject(int id, SubjectRequestDto Request);
 
 

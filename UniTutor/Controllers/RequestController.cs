@@ -77,6 +77,7 @@ namespace UniTutor.Controllers
                     r.Student._id,
                     r.Student.firstName,
                     r.Student.email,
+                    r.Student.ProfileUrl,
                     r.Student.phoneNumber, 
                     r.Student.district,
                     r.Student.schoolName,
@@ -108,11 +109,14 @@ namespace UniTutor.Controllers
                 {
                     r.Student._id,
                     r.Student.firstName,
+                    r.Student.lastName,
                     r.Student.email,
                     r.Student.phoneNumber,
+                    r.Student.ProfileUrl,
                     r.Student.district,
                     r.Student.schoolName,
                     r.Student.grade
+                    
                 },
                 r.tutorId,
                 r.studentEmail,
@@ -141,6 +145,7 @@ namespace UniTutor.Controllers
                     r.Tutor._id,
                     r.Tutor.firstName,
                     r.Tutor.lastName,
+                    r.Tutor.ProfileUrl,
                     r.Tutor.district,
                     r.Tutor.universityMail,
                     r.Tutor.phoneNumber
@@ -246,12 +251,7 @@ namespace UniTutor.Controllers
 
 
         }
-        //get requested list by student id
-        [HttpGet]
-
-
         
-
         [HttpGet("{studentId}/mysubjectscount")]
         public async Task<IActionResult> GetMySubjectsCount(int studentId)
         {
@@ -273,6 +273,22 @@ namespace UniTutor.Controllers
             return Ok(count);
 
         }
-       
+        //get the count of tutorid 
+        [HttpGet("{tutorId}/mystudentcount")]
+        public async Task<IActionResult> GetMyStudentCount(int tutorId)
+        {
+            var count = await _request.GetMyStudentCount(tutorId);
+            return Ok(count);
+        }
+        //get the count of pending requet
+        [HttpGet("{tutorId}/pendingrequestcount")]
+        public async Task<IActionResult> GetRequestStudentCount(int tutorId)
+        {
+            var count = await _request.GetAllRequestscount(tutorId);
+            return Ok(count);
+        }
+
+
+
     }
 }
