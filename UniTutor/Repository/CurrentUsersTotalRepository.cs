@@ -20,7 +20,8 @@ namespace UniTutor.Respository
 
         public async Task<int> GetTotalTutorsAsync()
         {
-            return await _context.Tutors.CountAsync();
+            return await _context.Tutors.Where(t => t.Verified == true).CountAsync();
+           
         }
     }
 }

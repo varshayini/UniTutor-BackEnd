@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniTutor.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class abi1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,22 @@ namespace UniTutor.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Admin", x => x._id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invitations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VerificationCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InvitedById = table.Column<int>(type: "int", nullable: false),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invitations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,7 +87,8 @@ namespace UniTutor.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProfileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Verified = table.Column<bool>(type: "bit", nullable: false),
-                    VerificationCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    VerificationCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Coins = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,35 +135,21 @@ namespace UniTutor.Migrations
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     tutorId = table.Column<int>(type: "int", nullable: true),
-                    studentId = table.Column<int>(type: "int", nullable: true),
-                    Student_id = table.Column<int>(type: "int", nullable: true),
-                    Tutor_id = table.Column<int>(type: "int", nullable: true)
+                    studentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reports", x => x._id);
                     table.ForeignKey(
-                        name: "FK_Reports_Students_Student_id",
-                        column: x => x.Student_id,
-                        principalTable: "Students",
-                        principalColumn: "_id");
-                    table.ForeignKey(
                         name: "FK_Reports_Students_studentId",
                         column: x => x.studentId,
                         principalTable: "Students",
-                        principalColumn: "_id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Reports_Tutors_Tutor_id",
-                        column: x => x.Tutor_id,
-                        principalTable: "Tutors",
                         principalColumn: "_id");
                     table.ForeignKey(
                         name: "FK_Reports_Tutors_tutorId",
                         column: x => x.tutorId,
                         principalTable: "Tutors",
-                        principalColumn: "_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -180,9 +183,9 @@ namespace UniTutor.Migrations
                 {
                     _id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     isCompleted = table.Column<bool>(type: "bit", nullable: false),
                     studentId = table.Column<int>(type: "int", nullable: true),
+                    text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     tutorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -198,6 +201,29 @@ namespace UniTutor.Migrations
                         column: x => x.tutorId,
                         principalTable: "Tutors",
                         principalColumn: "_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransactionTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Coins = table.Column<int>(type: "int", nullable: false),
+                    tutorId = table.Column<int>(type: "int", nullable: false),
+                    StripeSessionId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Tutors_tutorId",
+                        column: x => x.tutorId,
+                        principalTable: "Tutors",
+                        principalColumn: "_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,13 +249,13 @@ namespace UniTutor.Migrations
                         column: x => x.studentId,
                         principalTable: "Students",
                         principalColumn: "_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Requests_Subjects_subjectId",
                         column: x => x.subjectId,
                         principalTable: "Subjects",
                         principalColumn: "_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Requests_Tutors_tutorId",
                         column: x => x.tutorId,
@@ -278,19 +304,9 @@ namespace UniTutor.Migrations
                 column: "tutId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reports_Student_id",
-                table: "Reports",
-                column: "Student_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Reports_studentId",
                 table: "Reports",
                 column: "studentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reports_Tutor_id",
-                table: "Reports",
-                column: "Tutor_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reports_tutorId",
@@ -336,6 +352,11 @@ namespace UniTutor.Migrations
                 name: "IX_TodoItems_tutorId",
                 table: "TodoItems",
                 column: "tutorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_tutorId",
+                table: "Transactions",
+                column: "tutorId");
         }
 
         /// <inheritdoc />
@@ -348,6 +369,9 @@ namespace UniTutor.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "Invitations");
+
+            migrationBuilder.DropTable(
                 name: "Reports");
 
             migrationBuilder.DropTable(
@@ -358,6 +382,9 @@ namespace UniTutor.Migrations
 
             migrationBuilder.DropTable(
                 name: "TodoItems");
+
+            migrationBuilder.DropTable(
+                name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "Subjects");
