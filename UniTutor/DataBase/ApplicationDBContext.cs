@@ -9,7 +9,7 @@ namespace UniTutor.DataBase
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
         }
-
+       
         public DbSet<Admin> Admin { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Tutor> Tutors { get; set; }
@@ -21,6 +21,7 @@ namespace UniTutor.DataBase
         public DbSet<TodoItem> TodoItems { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

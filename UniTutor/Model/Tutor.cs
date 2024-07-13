@@ -4,7 +4,7 @@ using System.Runtime;
 
 namespace UniTutor.Model
 {
-    public class Tutor
+    public class Tutor 
     {
         [Key]
         public int _id { get; set; }
@@ -42,6 +42,7 @@ namespace UniTutor.Model
 
         public int Coins { get; set; }
 
+        public string status { get; set; } // "Active", "Suspended", "Banned"
 
 
 
