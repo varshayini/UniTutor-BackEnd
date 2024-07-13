@@ -56,6 +56,7 @@ namespace UniTutor.Repository
                 tutorId = request.tutorId,
                 studentEmail = request.studentEmail,
                 // status = request.status ?? "PENDING",
+
                 timestamp = DateTime.UtcNow
             };
 
