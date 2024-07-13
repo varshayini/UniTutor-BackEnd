@@ -13,15 +13,15 @@ namespace UniTutor.Repository
         private ApplicationDBContext _DBcontext;
         private readonly IConfiguration _config;
        
-
-
         public TutorRepository(ApplicationDBContext DBcontext, IConfiguration config)
         {
             _DBcontext = DBcontext;
             _config = config;
-
-
         }
+        
+
+
+
         public bool SignUp(Tutor tutor)
         {
             try
@@ -139,7 +139,7 @@ namespace UniTutor.Repository
         public async Task<TutorDashboardDetailsDto> GetTutorDashboardDetails(int tutorId)
         {
             var tutor = await _DBcontext.Tutors
-                .Where(s => s.Id == tutorId)
+                .Where(s => s._id == tutorId)
                 .Select(s => new TutorDashboardDetailsDto
                 {
                     firstName = s.firstName,

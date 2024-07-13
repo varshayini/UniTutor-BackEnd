@@ -8,7 +8,7 @@ namespace UniTutor.Model
     {
 
         [Key]
-        public int Id { get; set; }
+        public int _id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string grade { get; set; }
@@ -28,14 +28,16 @@ namespace UniTutor.Model
 
         public string? ProfileUrl { get; set; }
         public DateTime CreatedAt { get; set;}
-        public int?  numberofcomplain {  get; set; }
+        public int?  numberofcomplain {  get; set; } 
 
 
         //navigation Property
        
         public virtual ICollection<Request> Requests { get; set; }
+        public virtual ICollection<Report> Reports { get; set; }
+        // public virtual ICollection<TodoItem> TodoLists { get; set; }
 
-       // navigation Property
+        public ICollection<TodoItem> TodoItems { get; set; }
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         

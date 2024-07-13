@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -21,15 +21,19 @@ namespace UniTutor.Controllers
         private readonly IStudent _student;
         private readonly ITutor _tutor;
         private readonly IEmailService _emailService;
+        private readonly IUser _userRepository;
 
 
-        public AdminController(IAdmin adminRepository, IConfiguration config, IStudent student, ITutor tutor, IEmailService emailService)
+
+
+        public AdminController(IAdmin adminRepository, IConfiguration config, IStudent student, ITutor tutor, IEmailService emailService, IUser userRepository)
         {
             _admin = adminRepository;
             _config = config;
             _student = student;
             _tutor = tutor;
             _emailService = emailService;
+            _userRepository = userRepository;
         }
 
 
@@ -79,7 +83,7 @@ namespace UniTutor.Controllers
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                 new Claim(ClaimTypes.Name, adminLogin.Email),  // Email claim
-                new Claim(ClaimTypes.NameIdentifier, loggedInAdmin.Id.ToString()),  // Admin ID claim
+                new Claim(ClaimTypes.NameIdentifier, loggedInAdmin._id.ToString()),  // Admin ID claim
                 new Claim(ClaimTypes.GivenName, loggedInAdmin.Name),  // Admin name claim
                 new Claim(ClaimTypes.Role, "Student")
 
@@ -91,51 +95,79 @@ namespace UniTutor.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInAdmin.Id });
+                return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInAdmin._id });
             }
             else
             {
                 return Unauthorized("Invalid email or password");
             }
         }
-
-
-        [HttpGet("isAuthenticated")]
-        public IActionResult isAthenticated([FromQuery(Name = "token")] string token)
+        [HttpPost("relogin")]
+        public async Task<IActionResult> AdminLogin([FromBody] AdminLoginDto loginDto)
         {
-            var validatedToken = _admin.validateToken(token);
-            if (validatedToken != null)
-            {
-                return Ok(new { authenticated = true });
-            }
-            else
-            {
-                return Unauthorized(new { authenticated = false });
-            }
-        }
-       
-        
-        [HttpDelete("delete-student/{id}")]
-        public IActionResult DeleteStudent(int id)
-        {
-            var result = _student.Delete(id);
+            var result =  _admin.Login(loginDto.Username, loginDto.Password);
+
             if (result)
             {
-                return Ok(new { message = "Student deleted successfully." });
+                return Ok(new { success = true });
             }
-            return NotFound(new { message = "Student not found." });
+
+            return Unauthorized(new { success = false, message = "Invalid login credentials" });
+        }
+        [HttpPost("Report/send-email")]
+        public async Task<IActionResult> SendReportEmail([FromBody] SendReportEmailDto emailDto)
+        {
+            await _admin.SendReportEmailAsync(emailDto);
+            return Ok(new { success = true });
         }
 
-        [HttpDelete("delete-tutor/{id}")]
-        public IActionResult DeleteTutor(int id)
+
+        //[HttpGet("isAuthenticated")]
+        //public IActionResult isAthenticated([FromQuery(Name = "token")] string token)
+        //{
+        //    var validatedToken = _admin.validateToken(token);
+        //    if (validatedToken != null)
+        //    {
+        //        return Ok(new { authenticated = true });
+        //    }
+        //    else
+        //    {
+        //        return Unauthorized(new { authenticated = false });
+        //    }
+        //}
+
+
+        [HttpDelete("Tutordetails/{id}")]
+        public async Task<IActionResult> DeleteTutor(int id)
         {
-            var result = _tutor.Delete(id);
-            if (result)
+            var tutor = await _userRepository.GetTutorByIdAsync(id);
+            if (tutor == null)
             {
-                return Ok(new { message = "Tutor deleted successfully." });
+                return NotFound(new { success = false, message = "Tutor not found" });
             }
-            return NotFound(new { message = "Tutor not found." });
+
+            await _userRepository.DeleteTutorAsync(tutor);
+            return Ok(new { success = true });
         }
+        [HttpDelete("Studentdetails/{id}")]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            try
+            {
+                await _userRepository.DeleteStudentAsync(id);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, new { message = "An error occurred while processing your request.", details = ex.Message });
+            }
+        }
+
 
         [HttpGet("AllStudents")]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
@@ -163,6 +195,25 @@ namespace UniTutor.Controllers
                 return BadRequest("There is no student");
             }
         }
+        //get verified = false tutor list
+        [HttpGet("TutorVerification")]
+        public async Task<ActionResult<IEnumerable<Tutor>>> GetTutorVerification()
+        {
+            var tutors = _admin.GetTutorVerification();
+            if (tutors != null)
+            {
+                return Ok(tutors);
+            }
+            else
+            {
+                return BadRequest("There is no student");
+            }
+        }
+       
+
+
+
+
         [HttpPost("accepttutor/{id}")]
         public async Task<IActionResult> AcceptTutor(int id)
         {
@@ -214,7 +265,7 @@ namespace UniTutor.Controllers
 
             var studentViewMoreDto = new StudentViewMoreDto
             {
-                Id = student.Id,
+                _id = student._id,
                 firstName = student.firstName,
                 lastName = student.lastName,
                 email = student.email,
@@ -225,6 +276,8 @@ namespace UniTutor.Controllers
                 phoneNumber = student.phoneNumber,
                 numberofcomplain = student.numberofcomplain,
                 ProfileUrl = student.ProfileUrl,
+                CreatedAt = student.CreatedAt
+
               
             };
 
@@ -242,7 +295,7 @@ namespace UniTutor.Controllers
 
             var tutorViewMoreDto = new TutorViewMoreDto
             {
-
+                _id = tutor._id,
                 firstName = tutor.firstName,
                 lastName = tutor.lastName,
                 occupation = tutor.occupation,
@@ -253,6 +306,10 @@ namespace UniTutor.Controllers
                 qualifications = tutor.qualifications,
                 cv = tutor.cv,
                 universityID = tutor.universityID,
+                ProfileUrl = tutor.ProfileUrl,
+                CreatedAt = tutor.CreatedAt,
+                Verified = tutor.Verified
+
             };
 
             return Ok(tutorViewMoreDto);

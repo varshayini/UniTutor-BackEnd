@@ -6,7 +6,7 @@ namespace UniTutor.Model
     {
 
         [Key]
-        public int Id { get; set; }
+        public int _id { get; set; }
 
         [Required]
         [MaxLength(100)]

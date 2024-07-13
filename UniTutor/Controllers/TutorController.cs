@@ -9,6 +9,7 @@ using UniTutor.DTO;
 using UniTutor.Interface;
 using UniTutor.Model;
 using UniTutor.Repository;
+using UniTutor.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,12 +22,27 @@ namespace UniTutor.Controllers
         ITutor _tutor;
         private IConfiguration _config;
         private readonly IMapper _mapper;
+        //private readonly TutorService _tutorService;
+
+
         public TutorController(ITutor tutor, IConfiguration config,IMapper mapper)
         {
             _tutor = tutor;
             _config = config;
             _mapper = mapper;
+           
+            //_tutorService = tutorService;
+
         }
+   
+        //[HttpPost("request-to-join")]
+        //public async Task<IActionResult> RequestToJoin([FromBody] TutorRequestDto request)
+        //{
+        //    await _tutorService.RequestToJoinAsync(request.firstName);
+        //    return Ok("Request sent successfully");
+        //}
+
+
 
         [HttpPost("create")]
         public IActionResult CreateAccount([FromBody] TutorRegistration tutorDto)
@@ -47,7 +63,7 @@ namespace UniTutor.Controllers
                 if (result)
                 {
                     Console.WriteLine("registration success");
-                    return CreatedAtAction(nameof(GetAccountById), new { id = tutor.Id }, tutor);
+                    return CreatedAtAction(nameof(GetAccountById), new { id = tutor._id }, tutor);
                 }
                 else
                 {
@@ -103,7 +119,7 @@ namespace UniTutor.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
             new Claim(ClaimTypes.Name, loggedInTutor.universityMail),  // Email claim
-            new Claim(ClaimTypes.NameIdentifier, loggedInTutor.Id.ToString()),  // ID claim
+            new Claim(ClaimTypes.NameIdentifier, loggedInTutor._id.ToString()),  // ID claim
             new Claim(ClaimTypes.GivenName, loggedInTutor.firstName),  // Name claim
             new Claim(ClaimTypes.Role, "Tutor")
                 }),
@@ -114,14 +130,14 @@ namespace UniTutor.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInTutor.Id });
+            return Ok(new { token = tokenHandler.WriteToken(token), Id = loggedInTutor. _id });
         }
 
 
         [HttpPut("ProfileUpdate/{id}")]
         public async Task<IActionResult> UpdateTutor(int id, [FromBody] UpdateTutorDto updateTutorDto)
         {
-            if (id != updateTutorDto.Id)
+            if (id != updateTutorDto._id)
             {
                 return BadRequest();
             }
@@ -136,11 +152,9 @@ namespace UniTutor.Controllers
             tutor.firstName = updateTutorDto.firstName;
             tutor.lastName = updateTutorDto.lastName;
             tutor.occupation = updateTutorDto.occupation;
-            tutor.phoneNumber = updateTutorDto.phoneNumber;
-            tutor.district = updateTutorDto.district;
             tutor.address = updateTutorDto.address;
-            tutor.qualifications = updateTutorDto.qualifications;
-            tutor.cv = updateTutorDto.cv;
+            tutor.district = updateTutorDto.district;
+            tutor.phoneNumber = updateTutorDto.phoneNumber;
             tutor.ProfileUrl = updateTutorDto.ProfileUrl;
 
             if (!string.IsNullOrEmpty(updateTutorDto.ProfileUrl))

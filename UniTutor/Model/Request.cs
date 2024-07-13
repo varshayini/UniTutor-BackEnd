@@ -7,7 +7,7 @@ namespace UniTutor.Model
     public class Request
     {
         [Key]
-        public int subjectRequestId { get; set; }
+        public int _id { get; set; }
 
         [Required]
         public int subjectId { get; set; }
@@ -31,7 +31,7 @@ namespace UniTutor.Model
         [Required]
         public DateTime timestamp { get; set; }
 
-       // [JsonIgnore]
+      
         public virtual Student Student { get; set; }
         public virtual Subject Subject { get; set; }
         public virtual Tutor Tutor { get; set; }

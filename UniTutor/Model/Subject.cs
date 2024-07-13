@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿    using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniTutor.Model
 {
     public class Subject
     {
+        
+
         [Key]
         public int _id { get; set; }
 

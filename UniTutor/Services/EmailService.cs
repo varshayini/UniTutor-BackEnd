@@ -14,6 +14,7 @@ namespace UniTutor.Services
         public EmailService(IConfiguration config)
         {
             _config = config;
+
         }
 
         private SmtpClient ConfigureSmtpClient()

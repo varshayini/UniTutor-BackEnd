@@ -14,6 +14,10 @@ using UniTutor.Services;
 using AutoMapper;
 using UniTutor.Controllers;
 using UniTutor.Respository;
+using UniTutor;
+using UniTutor.Model;
+using Microsoft.AspNetCore.Http;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,7 +91,17 @@ builder.Services.AddTransient<IRequest, RequestRepository>();
 builder.Services.AddScoped<IAnalytics, AnalyticsRepository>();
 builder.Services.AddScoped<ICurrentUsersTotal,CurrentUsersTotalRepository>();
 builder.Services.AddScoped<ILastJoined,LastJoinedRepository>();
-
+builder.Services.AddScoped<IReport, ReportRepository>();
+builder.Services.AddScoped<ITodoItem, TodoItemRepository>();
+builder.Services.AddScoped<IReview, ReviewRepository>();
+builder.Services.AddScoped<IUser, UserRepository>();
+//builder.Services.AddScoped< TutorService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<ITransaction, TransactionRepository>();
+builder.Services.AddScoped<IInvitationService, InvitationService>();
+builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
 // Configure Stripe API keys
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
@@ -96,6 +110,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "UniTutor API", Version = "v1" });
 });
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-
+ 
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniTutor.DTO;
 using UniTutor.Interface;
@@ -19,10 +19,10 @@ public class CommentController : ControllerBase
     }
 
     [HttpPost("create/{Id}/{usertype}")]
-    public async Task<IActionResult> CreateStudentComment(int studentId,string usertype, [FromBody] CreateComment createComment)
+    public async Task<IActionResult> CreateStudentComment(int Id,string usertype, [FromBody] CreateComment createComment)
     {
 
-        await _comment.CreateCommentAsync(createComment.commentText, createComment.Date, studentId,usertype);
+        await _comment.CreateCommentAsync(createComment.commentText, createComment.Date, Id,usertype);
 
         return Ok();
     }
@@ -34,10 +34,32 @@ public class CommentController : ControllerBase
 
             .Select(c => new
             {
-                c.Id,
+                c._id,
                 c.commentText, 
                 c.Date,
                 c.userType,
+               // c.ProfileUrl,
+
+                fullName = c.userType == "Student" ?
+                           $"{c.Student.firstName} {c.Student.lastName}" :
+                           $"{c.Tutor.firstName} {c.Tutor.lastName}"
+            })
+            .ToList();
+
+        return Ok(comments);
+    }
+    [HttpGet("getforside")]
+    public ActionResult<IEnumerable<Comment>> GetAllCommentsForSide()
+    {
+        var comments = _comment.GetAllComments()
+
+            .Select(c => new
+            {
+                c._id,
+                c.commentText,
+                c.Date,
+                c.userType,
+                
 
                 fullName = c.userType == "Student" ?
                            $"{c.Student.firstName} {c.Student.lastName}" :

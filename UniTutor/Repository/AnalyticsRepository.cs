@@ -22,7 +22,7 @@ namespace UniTutor.Repository
 
         public async Task<List<WeeklyDataDto>> GetWeeklyJoinedTutorsAsync()
         {
-            return await GetWeeklyDataAsync(_context.Tutors, t => t.CreatedAt);
+            return await GetWeeklyDataAsync(_context.Tutors.Where(t => t.Verified==true), t => t.CreatedAt);
         }
 
         public async Task<List<WeeklyDataDto>> GetWeeklyJoinedStudentsAsync()

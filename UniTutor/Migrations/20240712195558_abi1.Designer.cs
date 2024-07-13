@@ -12,8 +12,8 @@ using UniTutor.DataBase;
 namespace UniTutor.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240708160353_request")]
-    partial class request
+    [Migration("20240712195558_abi1")]
+    partial class abi1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace UniTutor.Migrations
 
             modelBuilder.Entity("UniTutor.Model.Admin", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -46,18 +46,18 @@ namespace UniTutor.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("_id");
 
                     b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("UniTutor.Model.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -76,7 +76,7 @@ namespace UniTutor.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("_id");
 
                     b.HasIndex("stuId");
 
@@ -85,13 +85,84 @@ namespace UniTutor.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("UniTutor.Model.Request", b =>
+            modelBuilder.Entity("UniTutor.Model.Invitation", b =>
                 {
-                    b.Property<int>("subjectRequestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("subjectRequestId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InvitedById")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("VerificationCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Invitations");
+                });
+
+            modelBuilder.Entity("UniTutor.Model.Report", b =>
+                {
+                    b.Property<int>("_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("receiverMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("senderMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("studentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("tutorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("_id");
+
+                    b.HasIndex("studentId");
+
+                    b.HasIndex("tutorId");
+
+                    b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("UniTutor.Model.Request", b =>
+                {
+                    b.Property<int>("_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRejected")
+                        .HasColumnType("bit");
 
                     b.Property<string>("status")
                         .IsRequired()
@@ -114,7 +185,7 @@ namespace UniTutor.Migrations
                     b.Property<int>("tutorId")
                         .HasColumnType("int");
 
-                    b.HasKey("subjectRequestId");
+                    b.HasKey("_id");
 
                     b.HasIndex("studentId");
 
@@ -125,13 +196,46 @@ namespace UniTutor.Migrations
                     b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("UniTutor.Model.Student", b =>
+            modelBuilder.Entity("UniTutor.Model.Review", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
+
+                    b.Property<string>("feedback")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("studentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("subjectId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("_id");
+
+                    b.HasIndex("studentId");
+
+                    b.HasIndex("subjectId");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("UniTutor.Model.Student", b =>
+                {
+                    b.Property<int>("_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -182,7 +286,7 @@ namespace UniTutor.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("_id");
 
                     b.ToTable("Students");
                 });
@@ -229,13 +333,78 @@ namespace UniTutor.Migrations
                     b.ToTable("Subjects");
                 });
 
-            modelBuilder.Entity("UniTutor.Model.Tutor", b =>
+            modelBuilder.Entity("UniTutor.Model.TodoItem", b =>
+                {
+                    b.Property<int>("_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
+
+                    b.Property<bool>("isCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("studentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("tutorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("_id");
+
+                    b.HasIndex("studentId");
+
+                    b.HasIndex("tutorId");
+
+                    b.ToTable("TodoItems");
+                });
+
+            modelBuilder.Entity("UniTutor.Model.Transaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Coins")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripeSessionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TransactionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("tutorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("tutorId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("UniTutor.Model.Tutor", b =>
+                {
+                    b.Property<int>("_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
+
+                    b.Property<int>("Coins")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -294,7 +463,7 @@ namespace UniTutor.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id");
+                    b.HasKey("_id");
 
                     b.ToTable("Tutors");
                 });
@@ -316,18 +485,33 @@ namespace UniTutor.Migrations
                     b.Navigation("Tutor");
                 });
 
+            modelBuilder.Entity("UniTutor.Model.Report", b =>
+                {
+                    b.HasOne("UniTutor.Model.Student", "Student")
+                        .WithMany("Reports")
+                        .HasForeignKey("studentId");
+
+                    b.HasOne("UniTutor.Model.Tutor", "Tutor")
+                        .WithMany("Reports")
+                        .HasForeignKey("tutorId");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tutor");
+                });
+
             modelBuilder.Entity("UniTutor.Model.Request", b =>
                 {
                     b.HasOne("UniTutor.Model.Student", "Student")
                         .WithMany("Requests")
                         .HasForeignKey("studentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UniTutor.Model.Subject", "Subject")
                         .WithMany("Requests")
                         .HasForeignKey("subjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UniTutor.Model.Tutor", "Tutor")
@@ -343,6 +527,25 @@ namespace UniTutor.Migrations
                     b.Navigation("Tutor");
                 });
 
+            modelBuilder.Entity("UniTutor.Model.Review", b =>
+                {
+                    b.HasOne("UniTutor.Model.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("studentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniTutor.Model.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("subjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Subject");
+                });
+
             modelBuilder.Entity("UniTutor.Model.Subject", b =>
                 {
                     b.HasOne("UniTutor.Model.Tutor", "Tutor")
@@ -354,11 +557,41 @@ namespace UniTutor.Migrations
                     b.Navigation("Tutor");
                 });
 
+            modelBuilder.Entity("UniTutor.Model.TodoItem", b =>
+                {
+                    b.HasOne("UniTutor.Model.Student", "Student")
+                        .WithMany("TodoItems")
+                        .HasForeignKey("studentId");
+
+                    b.HasOne("UniTutor.Model.Tutor", "Tutor")
+                        .WithMany("TodoItems")
+                        .HasForeignKey("tutorId");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tutor");
+                });
+
+            modelBuilder.Entity("UniTutor.Model.Transaction", b =>
+                {
+                    b.HasOne("UniTutor.Model.Tutor", "Tutor")
+                        .WithMany("Transactions")
+                        .HasForeignKey("tutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tutor");
+                });
+
             modelBuilder.Entity("UniTutor.Model.Student", b =>
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("Reports");
+
                     b.Navigation("Requests");
+
+                    b.Navigation("TodoItems");
                 });
 
             modelBuilder.Entity("UniTutor.Model.Subject", b =>
@@ -370,9 +603,15 @@ namespace UniTutor.Migrations
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("Reports");
+
                     b.Navigation("Requests");
 
                     b.Navigation("Subjects");
+
+                    b.Navigation("TodoItems");
+
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

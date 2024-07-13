@@ -24,6 +24,9 @@ namespace UniTutor.Interface
 
         Task<TutorDashboardDetailsDto> GetTutorDashboardDetails(int tutorId);
 
+    
+
+
 
 
 

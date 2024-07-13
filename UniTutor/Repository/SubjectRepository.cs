@@ -90,12 +90,56 @@ namespace UniTutor.Repository
 
             return subject;
         }
-        //get all the subject
-        public async Task<List<Subject>> GetAllSubjects()
+        ////get all the subject
+        //public async Task<List<Subject>> GetAllSubjects()
+        //{
+        //    return await _DBcontext.Subjects.ToListAsync();
+        //}
+        public async Task<List<AllSubject>> GetAllSubjects()
         {
-            return await _DBcontext.Subjects.ToListAsync();
+            var subjectsWithRatings = await _DBcontext.Subjects
+                .Include(s => s.Tutor)
+                .Select(s => new
+                {
+                    s._id,
+                    s.title,
+                    s.description,
+                    s.coverImage,
+                    s.medium,
+                    s.mode,
+                    s.availability,
+                    tutorId = s.Tutor._id,
+                    tutorName = s.Tutor.firstName + s.Tutor.lastName, // Fetch the tutor's name
+                    ratings = _DBcontext.Reviews
+                        .Where(r => r.subjectId == s._id)
+                        .Select(r => r.rating)
+                        .ToList() // Convert IQueryable<int> to List<int>
+                })
+                .ToListAsync(); // Fetch data asynchronously into a list
+
+            var subjects = subjectsWithRatings
+                .Select(s => new AllSubject
+                {
+                    _id = s._id,
+                    title = s.title,
+                    description = s.description,
+                    coverImage = s.coverImage,
+                    medium = s.medium, // Assuming Medium is a comma-separated string
+                    mode = s.mode,
+                    availability = s.availability, // Assuming Availability is a comma-separated string
+                    tutorId = s.tutorId,
+                    tutorName = s.tutorName, // Map the tutor name
+                    averageRating = s.ratings.DefaultIfEmpty(0).Average() // Calculate the average rating
+                })
+                .ToList(); // Convert to a list synchronously
+
+            return subjects;
         }
+
+
+
 
 
     }
 }
+    
