@@ -48,4 +48,25 @@ public class CommentController : ControllerBase
 
         return Ok(comments);
     }
+    [HttpGet("getforside")]
+    public ActionResult<IEnumerable<Comment>> GetAllCommentsForSide()
+    {
+        var comments = _comment.GetAllComments()
+
+            .Select(c => new
+            {
+                c._id,
+                c.commentText,
+                c.Date,
+                c.userType,
+                
+
+                fullName = c.userType == "Student" ?
+                           $"{c.Student.firstName} {c.Student.lastName}" :
+                           $"{c.Tutor.firstName} {c.Tutor.lastName}"
+            })
+            .ToList();
+
+        return Ok(comments);
+    }
 }

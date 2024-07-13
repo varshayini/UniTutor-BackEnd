@@ -21,6 +21,8 @@ namespace UniTutor.Interface
         Task<IEnumerable<Request>> GetAcceptedRequestsByTutorId(int tutorId);
         public Task<IEnumerable<Request>> GetAcceptedRequestsByStudentId(int studentId);
         public  Task<IEnumerable<Request>> GetAllRequestsByStudentId(int studentId);
+        public  Task<IEnumerable<Request>> GetAllRequestscount(int tutorId);
+        public Task<IEnumerable<Request>> GetMyStudentCount(int tutorId);
     }
 }
 

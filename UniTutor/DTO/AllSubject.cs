@@ -1,13 +1,7 @@
-﻿    using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace UniTutor.Model
+﻿namespace UniTutor.DTO
 {
-    public class Subject
+    public class AllSubject
     {
-        
-
-        [Key]
         public int _id { get; set; }
 
         public string title { get; set; }
@@ -16,11 +10,10 @@ namespace UniTutor.Model
         public string[] medium { get; set; }
         public string mode { get; set; }
         public string[] availability { get; set; }
+        public string tutorName { get; set; }
+        public double averageRating { get; set; } = 0;
 
         public int tutorId { get; set; }
-
-        public Tutor Tutor { get; set; }
-        public virtual ICollection<Request> Requests { get; set; }
 
     }
 }

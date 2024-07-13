@@ -4,5 +4,6 @@
     {
         public int rating { get; set; }
         public string feedback { get; set; }
+        public DateTime? timestamp { get; set; }
     }
 }
