@@ -13,8 +13,6 @@ namespace UniTutor.Repository
         private ApplicationDBContext _DBcontext;
         private readonly IConfiguration _config;
        
-
-
         public TutorRepository(ApplicationDBContext DBcontext, IConfiguration config)
         {
             _DBcontext = DBcontext;
