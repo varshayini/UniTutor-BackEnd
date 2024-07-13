@@ -40,7 +40,7 @@ namespace UniTutor.Model
         public ICollection<TodoItem> TodoItems { get; set; }
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-        
+        public string status { get; set; } // "Active", "Suspended", "Banned"
 
     }
 
