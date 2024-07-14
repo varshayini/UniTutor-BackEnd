@@ -6,6 +6,11 @@ namespace UniTutor.Interface
     {
         Task<Report> Create(Report report);
         Task<Report> GetById(int id);
-        public  Task<List<Report>> GetAll();
+        Task<List<Report>> GetAll();
+        Task SendWarningEmail(int reportId, string adminMessage);
+        Task SuspendUser(int reportId);
+        Task BanUser(int reportId);
+        Task RestoreUser(int reportId);
+
     }
 }
